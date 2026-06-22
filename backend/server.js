@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -29,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/activities", activityRouter);
+app.use("/api/sales", saleRouter);
 
 // Server
 const PORT = process.env.PORT || 5000;
