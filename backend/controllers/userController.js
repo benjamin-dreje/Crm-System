@@ -89,7 +89,10 @@ export const loginUser = async (req, res) => {
     }
 
     // לוקח את 2 הטוקנים האחרונים ומוסיף את הטוקן החדש (סך הכל תמיד מקסימום 3)
-    user.refreshToken = [...user.refreshToken.slice(-2), refreshToken];
+    // user.refreshToken = [...user.refreshToken.slice(-2), refreshToken];
+const lastTwo = user.refreshToken.slice(-2);
+lastTwo.push(refreshToken);
+user.refreshToken = lastTwo;
     await user.save();
 
     // 4️⃣ הגדרת ה-Cookies (שתיהן httpOnly ומאובטחות!)
