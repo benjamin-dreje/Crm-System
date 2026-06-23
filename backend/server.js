@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./router/userRouter.js";
 import customerRoutes from "./router/costomersRouter.js";
 import activityRouter from "./router/activityRouter.js";
+import saleRouter from "./router/saleRouter.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 import connectDB from "./config/connectDb.js";
 
