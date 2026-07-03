@@ -1,54 +1,27 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { authUtils } from "@/utils/auth";
+import { useAuth } from "../../hook/useAuth.js";
 import "./page.css";
 
 export default function Login() {
-  const router = useRouter();
+  const { login, isLoggingIn } = useAuth(); // שימוש במוטציה ובמצב הטעינה המובנה
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+    setError(""); // איפוס שגיאות קודמות
 
     try {
-      // Call your backend login API
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Include cookies in request
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Login failed");
-        setLoading(false);
-        return;
-      }
-
-      // Backend already set httpOnly cookies, no need to store token on client
-      // Just redirect to CRM, middleware will validate the httpOnly cookies
-      console.log("Login successful, redirecting to CRM");
-      router.push("/crm");
+      // הפעלת פונקציית ההתחברות מה-Hook
+      // היא כבר מבצעת את ה-fetch, מנהלת credentials, ומנווטת ל-/crm בהצלחה
+      await login({ email, password });
     } catch (err) {
-      setError("Error connecting to server. Make sure backend is running.");
-      console.error("Login error:", err);
-    } finally {
-      setLoading(false);
+      // אם השרת החזיר שגיאה (למשל 401), היא תיתפס כאן אוטומטית הודות ל-mutateAsync
+      setError(err.message || "Login failed. Check your credentials.");
     }
   };
 
@@ -81,11 +54,10 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
+        <button type="submit" disabled={isLoggingIn}>
+          {isLoggingIn ? "Logging in..." : "Login"}
         </button>
       </form>
-      <p></p>
     </div>
   );
 }

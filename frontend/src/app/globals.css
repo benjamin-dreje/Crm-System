@@ -20,4 +20,26 @@ a {
   color: inherit;
   text-decoration: none;
 }
+/* מבנה העטיפה של ה-CRM */
+.crm-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
 
+/* הפתרון לבעיית ההסתרה: מזיזים את התוכן ימינה בדיוק ברוחב של הסיידבר (260px) */
+.crm-main-content {
+  flex-grow: 1;
+  margin-left: 260px; /* המרווח שמונע מהסיידבר להסתיר את הטקסט */
+  padding: 40px;
+  box-sizing: border-box;
+  background-color: #f8fafc; /* רקע בהיר ונקי לתוכן */
+}
+
+/* התאמה למובייל - אם הסיידבר מתכווץ ל-70px במסכים קטנים */
+@media (max-width: 768px) {
+  .crm-main-content {
+    margin-left: 70px;
+    padding: 20px;
+  }
+}

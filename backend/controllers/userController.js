@@ -73,7 +73,7 @@ export const loginUser = async (req, res) => {
         role: user.role,
       },
       process.env.JWT_SECRET || "access_secret_key",
-      { expiresIn: "15m" },
+      { expiresIn: "1d" },
     );
 
     // 2️⃣ יצירת ה-Refresh Token (תוקף ארוך - 7 ימים)
@@ -90,9 +90,9 @@ export const loginUser = async (req, res) => {
 
     // לוקח את 2 הטוקנים האחרונים ומוסיף את הטוקן החדש (סך הכל תמיד מקסימום 3)
     // user.refreshToken = [...user.refreshToken.slice(-2), refreshToken];
-const lastTwo = user.refreshToken.slice(-2);
-lastTwo.push(refreshToken);
-user.refreshToken = lastTwo;
+    const lastTwo = user.refreshToken.slice(-2);
+    lastTwo.push(refreshToken);
+    user.refreshToken = lastTwo;
     await user.save();
 
     // 4️⃣ הגדרת ה-Cookies (שתיהן httpOnly ומאובטחות!)
@@ -100,7 +100,7 @@ user.refreshToken = lastTwo;
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      maxAge: 15 * 60 * 1000, // 15 דקות
+      maxAge: 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: isProduction ? "strict" : "lax",
       path: "/",
