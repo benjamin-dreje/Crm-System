@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 430px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(51, 65, 85, 0.12);
+}
+
+.login-container h1 {
+  text-align: center;
+  color: #334155;
+  font-size: 32px;
+  margin-bottom: 25px;
+}
+
+.login-demo {
+  background: #f8fafc;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.login-demo-text {
+  margin-bottom: 8px;
+}
+
+.login-demo h4 {
+  color: #334155;
+}
+
+.login-demo p {
+  color: #475569;
+  font-size: 14px;
+  margin: 3px 0;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #ef4444;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: 0.25s;
+  outline: none;
+}
+
+input:focus {
+  border: 1px solid #334155;
+  box-shadow: 0 0 0 4px rgba(51, 65, 85, 0.15);
+}
+
+.login-btn {
+  padding: 14px;
+  border: 1px solid #334155;
+  background: #334155;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.login-demo-container {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #f1f5f9;
+  flex-direction: column;
+}
+.login-btn:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+.login-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.login-btn:disabled {
+  background: #94a3b8;
+  border-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    margin: 30px 15px;
+    padding: 25px;
+  }
+
+  .login-container h1 {
+    font-size: 28px;
+  }
+}

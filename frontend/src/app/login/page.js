@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "../../hook/useAuth.js";
-import "./page.css";
+import "./login.css";
+import Loading from "../crm/component/loading/loading.js";
 
 export default function Login() {
   const { login, isLoggingIn } = useAuth(); // שימוש במוטציה ובמצב הטעינה המובנה
@@ -30,11 +31,19 @@ export default function Login() {
       <h1>Login</h1>
 
       <div className="login-demo">
-        <div className="login-demo-text">
-          <h4>Demo Credentials</h4>
+        <h4>Demo Credentials</h4>
+        <div className="login-demo-container">
+          <div className="login-demo-user">
+            <h3>user</h3>
+            <p>email: user@example.com</p>
+            <p>password: password</p>
+          </div>
+          <div className="login-demo-admin">
+            <h3>admin</h3>
+            <p>email: admin@system.com</p>
+            <p>password: adminpassword</p>
+          </div>
         </div>
-        <p>email: user@example.com</p>
-        <p>password: password</p>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -54,7 +63,8 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" disabled={isLoggingIn}>
+
+        <button className="login-btn" type="submit" disabled={isLoggingIn}>
           {isLoggingIn ? "Logging in..." : "Login"}
         </button>
       </form>

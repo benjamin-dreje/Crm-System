@@ -1,18 +1,22 @@
 "use client";
+import Loading from "../../component/loading/loading";
 
 import { useParams } from "next/navigation";
+import { useCustomers } from "../../../../hook/useCustomers";
+
 export default function CustomerPage() {
   const { id } = useParams();
 
-  const { data, isLoading, isError, error } = useCustomer(id);
+  const { customer, isLoadingDetail } = useCustomers(id);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>{error.message}</div>;
+  if (isLoadingDetail) return <Loading />;
+
+  if (!customer) return <div>Customer not found</div>;
 
   return (
     <div>
-      <h1>{data.firstName}</h1>
-      <p>{data.email}</p>
+      <h1>{customer.firstName}</h1>
+      <p>{customer.email}</p>
     </div>
   );
 }

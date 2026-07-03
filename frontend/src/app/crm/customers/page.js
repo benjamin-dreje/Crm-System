@@ -8,7 +8,7 @@ export default function CustomersPage() {
   // רשימת לקוחות לדוגמה (במציאות זה יגיע מה-Hook או ה-API שלך)
   const dummyCustomers = [
     {
-      id: "1",
+      id: "6a35a72d4aeb7cd0d4ec4ba7",
       name: "Alex Johnson",
       email: "alex@example.com",
       status: "Active",
