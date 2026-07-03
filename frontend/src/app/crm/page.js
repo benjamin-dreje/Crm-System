@@ -8,7 +8,6 @@ export default function HomeCrm() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "20px",
         }}
       >
         <h1>CRM Dashboard</h1>
