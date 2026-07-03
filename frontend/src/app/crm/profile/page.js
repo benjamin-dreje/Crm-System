@@ -1,5 +1,5 @@
 "use client";
-
+import "./profile.css";
 import { useState } from "react";
 
 export default function ProfilePage() {
@@ -30,17 +30,17 @@ export default function ProfilePage() {
       {/* כותרת העמוד */}
       <div className="page-header">
         <h1>My Profile</h1>
-        <p>Manage your personal information and account settings.</p>
+
+        <div className="profile-header-info">
+          <span className="role-badge">{formData.role}</span>
+          <span className="profile-avatar">👤</span>
+        </div>
       </div>
 
       <div className="profile-grid">
         {/* כרטיס פרופיל שמאלי/עליון */}
         <div className="profile-card summary-card">
-          <div className="avatar-container">
-            <span className="profile-avatar">👤</span>
-          </div>
           <h2>{formData.fullName}</h2>
-          <span className="role-badge">{formData.role}</span>
           <p className="profile-email">{formData.email}</p>
         </div>
 

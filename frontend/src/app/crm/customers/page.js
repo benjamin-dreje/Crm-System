@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import "./customers.css";
 // ייבוא ה-Hook שלך (אם הוא מחזיר את כל הלקוחות, או שנשתמש ברשימה זמנית)
 // import { useCustomers } from "@/hook/useCustomers";
 
@@ -46,6 +47,14 @@ export default function CustomersPage() {
           <p>View, edit and manage all your CRM customers.</p>
         </div>
         <button className="btn-add">+ Add Customer</button>
+      </div>
+
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search customers by name, email or phone number..."
+          className="search-input"
+        />
       </div>
 
       {/* טבלת הלקוחות */}

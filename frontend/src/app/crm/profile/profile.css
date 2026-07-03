@@ -1,0 +1,21 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-header-info {
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.role-badge {
+  color: #fff;
+  background-color: #1e293b85;
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  /* align-content: center; */
+  align-items: center;
+}
