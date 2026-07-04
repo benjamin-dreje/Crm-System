@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ימים
       secure: isProduction,
       sameSite: isProduction ? "strict" : "lax",
-      path: "/api/users/refresh", // חשוב להגביל את ה-Refresh Token רק לנתיב החידוש שלו
+      path: "/", // חשוב להגביל את ה-Refresh Token רק לנתיב החידוש שלו
     });
 
     res.status(200).json({
