@@ -20,7 +20,7 @@ export default function Navbar() {
     <div className="sidebar-container">
       {/* Logo/Brand Section */}
       <div className="sidebar-brand">
-        <span className="brand-icon">💼</span>
+        <span className="brand-icon">logo</span>
         <span>CRM System</span>
       </div>
 
@@ -31,7 +31,7 @@ export default function Navbar() {
             href="/crm"
             className={`menu-link ${pathname === "/crm" ? "active" : ""}`}
           >
-            <span className="link-icon">🏠</span>
+            <span className="link-icon">logo</span>
             <span>Dashboard</span>
           </Link>
         </li>
@@ -41,7 +41,7 @@ export default function Navbar() {
             href="/crm/customers"
             className={`menu-link ${pathname === "/crm/customers" ? "active" : ""}`}
           >
-            <span className="link-icon">👥</span>
+            <span className="link-icon">logo</span>
             <span>Customers</span>
           </Link>
         </li>
@@ -51,7 +51,7 @@ export default function Navbar() {
             href="/crm/profile"
             className={`menu-link ${pathname === "/crm/profile" ? "active" : ""}`}
           >
-            <span className="link-icon">✉️</span>
+            <span className="link-icon">logo</span>
             <span>profile</span>
           </Link>
         </li>
@@ -61,7 +61,7 @@ export default function Navbar() {
             href="/crm/settings"
             className={`menu-link ${pathname === "/crm/settings" ? "active" : ""}`}
           >
-            <span className="link-icon">⚙️</span>
+            <span className="link-icon">logo</span>
             <span>Settings</span>
           </Link>
         </li>
@@ -70,7 +70,7 @@ export default function Navbar() {
       {/* Footer Section */}
       <div className="sidebar-footer">
         <Link href="/login" className="logout-link" onClick={handleLogout}>
-          <span className="link-icon">🚪</span>
+          <span className="link-icon">logo</span>
           <span>Logout</span>
         </Link>
       </div>
