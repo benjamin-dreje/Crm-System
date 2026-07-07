@@ -14,6 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
+    https: "https://benjamin-system.vercel.app/",
     credentials: true,
   }),
 );
