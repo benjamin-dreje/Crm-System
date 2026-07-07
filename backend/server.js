@@ -13,8 +13,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    https: "https://benjamin-system.vercel.app/",
+    origin: ["http://localhost:3000", "https://benjamin-system.vercel.app"],
     credentials: true,
   }),
 );
