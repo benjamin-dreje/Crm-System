@@ -6,10 +6,11 @@ import { useState } from "react";
 import { useCustomers } from "../../../hook/useCustomers";
 
 export default function CustomersPage() {
-  const { createCustomer, isCreating } = useCustomers();
+  const { createCustomer, isCreating, deleteCustomer } = useCustomers();
   const [button, setButton] = useState(false);
   const [createdMessage, setCreatedMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [customer, setCustomer] = useState({
     firstName: "",
@@ -29,7 +30,7 @@ export default function CustomersPage() {
 
   const dummyCustomers = [
     {
-      id: "6a508dbc22005d5c979ccdd0",
+      id: "6a50bfac6e73ed95540993e7",
       name: "Alex Johnson",
       email: "alex@example.com",
       status: "Active",
@@ -91,12 +92,28 @@ export default function CustomersPage() {
     }
   };
 
+  const handleDeleteButton = async (id) => {
+    try {
+      const response = await deleteCustomer(id);
+
+      setSuccessMessage(response.message || "Customer deleted successfully");
+
+      setTimeout(() => {
+        setSuccessMessage("");
+        setErrorMessage("");
+      }, 2000);
+    } catch (error) {
+      setErrorMessage(error.message);
+      setSuccessMessage("");
+    }
+  };
+
   if (button) {
     return (
       <div className="add-customer-form">
         {createdMessage && (
           <div className="userIsCreatedMessage">
-            Customer created successfully
+            {"Customer created successfully"}
           </div>
         )}
 
@@ -265,7 +282,10 @@ export default function CustomersPage() {
           + Add Customer
         </button>
       </div>
-
+      {successMessage && (
+        <div className="userIsCreatedMessage">{successMessage}</div>
+      )}
+      {errorMessage && <div className="error">{errorMessage}</div>}
       <div className="search-container">
         <input
           type="text"
@@ -308,7 +328,12 @@ export default function CustomersPage() {
               <div>
                 <span>
                   {" "}
-                  <button className="btn-delete">delete</button>
+                  <button
+                    className="btn-delete"
+                    onClick={() => handleDeleteButton(customer.id)}
+                  >
+                    delete
+                  </button>
                 </span>
               </div>
             </div>
@@ -364,7 +389,14 @@ export default function CustomersPage() {
                 </td>
 
                 <td>
-                  <button className="btn-delete">delete</button>
+                  <button
+                    className="btn-delete"
+                    onClick={() => {
+                      handleDeleteButton(customer.id);
+                    }}
+                  >
+                    delete
+                  </button>
                 </td>
               </tr>
             ))}
