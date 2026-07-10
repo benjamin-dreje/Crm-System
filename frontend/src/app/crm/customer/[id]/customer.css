@@ -1,0 +1,195 @@
+/* Header */
+
+.customer-details-header {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.customer-details-header h1 {
+  margin: 0;
+
+  color: #111827;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.customer-details-header p {
+  margin-top: 8px;
+
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* Save Button */
+
+.save-btn {
+  background: #2563eb;
+
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 26px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Main Card */
+
+.customer-card {
+  width: 100%;
+  max-width: 1000px;
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 30px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Title */
+
+.section-title {
+  padding-bottom: 18px;
+
+  margin-bottom: 25px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-title h2 {
+  margin: 0;
+
+  font-size: 22px;
+
+  color: #111827;
+}
+
+/* Fields Wrapper */
+
+.customer-info-wrapper {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+}
+
+/* Single Field */
+
+.customer-info-item {
+  flex: 1 1 280px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.customer-info-item label {
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+.customer-info-item input {
+  height: 45px;
+
+  width: 100%;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  border: 1px solid #d1d5db;
+
+  background: #f9fafb;
+
+  color: #111827;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.customer-info-item input:focus {
+  border-color: #2563eb;
+
+  background: white;
+}
+
+/* Not Found */
+
+.not-found {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  height: 300px;
+
+  font-size: 22px;
+
+  color: #ef4444;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .customer-details {
+    padding: 25px 15px;
+  }
+
+  .customer-details-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 20px;
+  }
+
+  .customer-card {
+    padding: 20px;
+    height: 400px;
+    overflow-y: scroll;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .customer-details-header h1 {
+    font-size: 26px;
+  }
+
+  .customer-info-item {
+    flex: 1 1 100%;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+}

@@ -6,32 +6,32 @@ import "./customers.css";
 export default function CustomersPage() {
   const dummyCustomers = [
     {
-      id: "6a35a72d4aeb7cd0d4ec4ba7",
+      id: "6a508dbc22005d5c979ccdd0",
       name: "Alex Johnson",
       email: "alex@example.com",
       status: "Active",
-      company: "TechCorp",
+      phone: "054545181",
     },
     {
       id: "2",
       name: "Sarah Miller",
       email: "sarah@example.com",
       status: "Pending",
-      company: "DesignStudio",
+      phone: "556565656",
     },
     {
       id: "3",
       name: "Michael Brown",
       email: "michael@example.com",
       status: "Active",
-      company: "LogiChain",
+      phone: "556566665656",
     },
     {
       id: "4",
       name: "Emma Davis",
       email: "emma@example.com",
       status: "Inactive",
-      company: "FinTech",
+      phone: "556562335656",
     },
   ];
 
@@ -70,9 +70,9 @@ export default function CustomersPage() {
 
             <div className="customer-card-info">
               <div>
-                <span>Company</span>
+                <span>phone</span>
 
-                <strong>{customer.company}</strong>
+                <strong>{customer.phone}</strong>
               </div>
 
               <div>
@@ -99,7 +99,7 @@ export default function CustomersPage() {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Company</th>
+              <th>phone</th>
               <th>Email</th>
               <th>Status</th>
               <th>Actions</th>
@@ -111,7 +111,7 @@ export default function CustomersPage() {
               <tr key={customer.id}>
                 <td className="customer-name">{customer.name}</td>
 
-                <td>{customer.company}</td>
+                <td>{customer.phone}</td>
 
                 <td>{customer.email}</td>
 
