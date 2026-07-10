@@ -101,7 +101,7 @@ export default function CustomerPage() {
         )}
       </div>
 
-      <div className=".customer-card-page ">
+      <div className="customer-card-page ">
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
         {successMessage && (
