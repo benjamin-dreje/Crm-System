@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import "./customers.css";
-// ייבוא ה-Hook שלך (אם הוא מחזיר את כל הלקוחות, או שנשתמש ברשימה זמנית)
-// import { useCustomers } from "@/hook/useCustomers";
 
 export default function CustomersPage() {
-  // רשימת לקוחות לדוגמה (במציאות זה יגיע מה-Hook או ה-API שלך)
   const dummyCustomers = [
     {
       id: "6a35a72d4aeb7cd0d4ec4ba7",
@@ -40,12 +37,12 @@ export default function CustomersPage() {
 
   return (
     <div className="customers-page">
-      {/* כותרת העמוד ופעולות מהירות */}
       <div className="page-header">
         <div>
           <h1>Customers Management</h1>
           <p>View, edit and manage all your CRM customers.</p>
         </div>
+
         <button className="btn-add">+ Add Customer</button>
       </div>
 
@@ -57,7 +54,46 @@ export default function CustomersPage() {
         />
       </div>
 
-      {/* טבלת הלקוחות */}
+      {/* Mobile Cards */}
+      <div className="customers-cards">
+        {dummyCustomers.map((customer) => (
+          <div className="customer-card" key={customer.id}>
+            <div className="customer-card-header">
+              <div className="avatar">{customer.name.charAt(0)}</div>
+
+              <div>
+                <h3>{customer.name}</h3>
+
+                <p>{customer.email}</p>
+              </div>
+            </div>
+
+            <div className="customer-card-info">
+              <div>
+                <span>Company</span>
+
+                <strong>{customer.company}</strong>
+              </div>
+
+              <div>
+                <span>Status</span>
+
+                <span
+                  className={`status-badge ${customer.status.toLowerCase()}`}
+                >
+                  {customer.status}
+                </span>
+              </div>
+            </div>
+
+            <Link href={`/crm/customer/${customer.id}`} className="btn-view">
+              View Profile
+            </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table */}
       <div className="table-container">
         <table className="customers-table">
           <thead>
@@ -69,12 +105,16 @@ export default function CustomersPage() {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {dummyCustomers.map((customer) => (
               <tr key={customer.id}>
                 <td className="customer-name">{customer.name}</td>
+
                 <td>{customer.company}</td>
+
                 <td>{customer.email}</td>
+
                 <td>
                   <span
                     className={`status-badge ${customer.status.toLowerCase()}`}
@@ -82,8 +122,8 @@ export default function CustomersPage() {
                     {customer.status}
                   </span>
                 </td>
+
                 <td>
-                  {/* ניתוב דינמי לעמוד הלקוח הספציפי לפי ה-ID שלו */}
                   <Link
                     href={`/crm/customer/${customer.id}`}
                     className="btn-view"

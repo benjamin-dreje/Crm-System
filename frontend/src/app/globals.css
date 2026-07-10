@@ -27,19 +27,21 @@ a {
   min-height: 100vh;
 }
 
-/* הפתרון לבעיית ההסתרה: מזיזים את התוכן ימינה בדיוק ברוחב של הסיידבר (260px) */
+/* אזור התוכן */
 .crm-main-content {
-  flex-grow: 1;
-  margin-left: 260px; /* המרווח שמונע מהסיידבר להסתיר את הטקסט */
+  flex: 1;
+  margin-left: 260px;
   padding: 40px;
-  box-sizing: border-box;
-  background-color: #f8fafc; /* רקע בהיר ונקי לתוכן */
+  min-height: 100vh;
+  background: #f8fafc;
+  transition: all 0.3s ease;
 }
 
-/* התאמה למובייל - אם הסיידבר מתכווץ ל-70px במסכים קטנים */
+/* Mobile */
 @media (max-width: 768px) {
   .crm-main-content {
-    margin-left: 70px;
-    padding: 20px;
+    margin-left: 0;
+    width: 100%;
+    padding: 80px 20px 20px;
   }
 }
