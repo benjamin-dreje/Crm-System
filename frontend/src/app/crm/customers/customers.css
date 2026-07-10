@@ -122,6 +122,179 @@
   color: white;
 }
 
+/* from */
+/* =========================
+   Add Customer Form
+========================= */
+
+.add-customer-form {
+  width: 700px;
+  max-width: 95%;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.add-customer-form h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #1f2937;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+/* שני הצדדים */
+
+.address-section-two {
+  border-left: 1px solid #e5e7eb;
+}
+
+.address-section-two h3 {
+  margin: 0 0 5px;
+  color: #374151;
+  font-size: 18px;
+}
+
+.add-customer-form input {
+  width: 100%;
+  height: 45px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  padding: 0 14px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.2s;
+
+  background: #f9fafb;
+  margin-bottom: 10px;
+}
+
+.add-customer-form input:focus {
+  border-color: #2563eb;
+
+  background: white;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.userIsCreatedMessage {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.error {
+  background: #df6d5d3b;
+  color: #b32c0b;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-delete {
+  background: #df867b50;
+  color: #b32906;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+}
+
+.btn-delete:hover {
+  background: #b32c0b;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+/* כפתורים */
+
+.btn-save,
+.btn-back {
+  height: 45px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.btn-save {
+  background: #2563eb;
+
+  color: white;
+}
+
+.btn-save:hover {
+  background: #1d4ed8;
+}
+
+.btn-back {
+  background: #f3f4f6;
+
+  color: #374151;
+}
+
+.btn-back:hover {
+  background: #e5e7eb;
+}
+
+/* שני הכפתורים בשורה */
+
+.add-customer-form .btn-save,
+.add-customer-form .btn-back {
+  width: 100%;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .form-container {
+    flex-direction: column;
+  }
+
+  .address-section {
+    border-left: none;
+
+    padding-left: 0;
+
+    border-top: 1px solid #e5e7eb;
+
+    padding-top: 20px;
+  }
+
+  .add-customer-form {
+    padding: 20px;
+  }
+}
+
 /* Mobile Cards hidden by default */
 
 .customers-cards {
@@ -166,6 +339,9 @@
     padding: 20px;
     border-radius: 18px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   .customer-card-header {

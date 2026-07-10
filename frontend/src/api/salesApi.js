@@ -6,7 +6,8 @@ export const salesApi = {
     const res = await fetch(`${BASE_URL}/sales/getSales`, {
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to fetch sales data");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch sales data");
+    return data;
   },
 };

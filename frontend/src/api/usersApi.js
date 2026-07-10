@@ -7,8 +7,9 @@ export const usersApi = {
   // GET /users/ - שליפת כל המשתמשים (רק למי שעבר authMiddleware)
   getAll: async () => {
     const res = await fetch(`${BASE_URL}/users`, { credentials: "include" });
-    if (!res.ok) throw new Error("Failed to fetch users");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch users");
+    return data;
   },
 
   // POST /users/create - יצירת משתמש/עובד חדש (רק אדמין)
@@ -19,8 +20,9 @@ export const usersApi = {
       body: JSON.stringify(userData),
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to create user");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to create user");
+    return data;
   },
 
   // POST /users/login - התחברות וקבלת העוגיות
@@ -31,8 +33,9 @@ export const usersApi = {
       body: JSON.stringify(credentials),
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Login failed. Check your credentials.");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Login failed. Check your credentials.");
+    return data;
   },
 
   // POST /users/logout - התנתקות ומחיקת העוגייה
@@ -41,8 +44,9 @@ export const usersApi = {
       method: "POST",
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Logout failed");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Logout failed");
+    return data;
   },
 
   // POST /users/refresh - חידוש אוטומטי של ה-Access Token
@@ -51,7 +55,8 @@ export const usersApi = {
       method: "POST",
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Session expired");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Session expired");
+    return data;
   },
 };

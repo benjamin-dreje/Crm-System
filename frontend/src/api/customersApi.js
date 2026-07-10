@@ -13,8 +13,10 @@ export const customersApi = {
     const res = await fetch(`${BASE_URL}/customers/${id}`, {
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to fetch customer details");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok)
+      throw new Error(data.message || "Failed to fetch customer details");
+    return data;
   },
 
   create: async (customerData) => {
@@ -24,8 +26,13 @@ export const customersApi = {
       body: JSON.stringify(customerData),
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to create customer");
-    return res.json();
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to create customer");
+    }
+    return data;
   },
 
   update: async ({ id, customerData }) => {
@@ -35,8 +42,10 @@ export const customersApi = {
       body: JSON.stringify(customerData),
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to update customer");
-    return res.json();
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Failed to update customer");
+    return data;
   },
 
   delete: async (id) => {
@@ -44,7 +53,8 @@ export const customersApi = {
       method: "DELETE",
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to delete customer");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to delete customer");
+    return data;
   },
 };

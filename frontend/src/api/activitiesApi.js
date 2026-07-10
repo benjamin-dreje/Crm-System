@@ -5,8 +5,9 @@ export const activitiesApi = {
     const res = await fetch(`${BASE_URL}/activities/${customerId}`, {
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to fetch activities");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch activities");
+    return data;
   },
 
   create: async ({ customerId, activityData }) => {
@@ -16,7 +17,8 @@ export const activitiesApi = {
       body: JSON.stringify(activityData),
       credentials: "include",
     });
-    if (!res.ok) throw new Error("Failed to create activity");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to create activity");
+    return data;
   },
 };
