@@ -36,6 +36,7 @@ export function useActivities(customerId) {
     activities: activitiesQuery.data?.activities || [],
     isLoadingActivities: activitiesQuery.isLoading,
     isErrorActivities: activitiesQuery.isError,
+    count: activitiesQuery.data?.count || 0,
 
     // פונקציות לביצוע פעולות מהקומפוננטה
     addActivity: addActivityMutation.mutateAsync,

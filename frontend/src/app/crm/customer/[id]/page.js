@@ -14,7 +14,7 @@ export default function CustomerPage() {
   const { customer, isLoadingDetail, updateCustomer, isUpdating } =
     useCustomers(id);
 
-  const { activities } = useActivities(customer?._id);
+  const { activities, count } = useActivities(customer?._id);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -254,7 +254,8 @@ export default function CustomerPage() {
         <div className="customer-activities">
           <div className="header-activity">
             <div className="title-activity">
-              <h2>customer avtivity</h2>
+              <h2>Customer Activity</h2>
+              <p className="total-activities">Total activities: {count || 0}</p>
             </div>
             <div className="add-activity-btn">
               <button> add activity</button>
@@ -268,6 +269,7 @@ export default function CustomerPage() {
                   <th>Status</th>
                   <th>Customer</th>
                   <th>Notes</th>
+                  <th>performedBy</th>
                 </tr>
               </thead>
 

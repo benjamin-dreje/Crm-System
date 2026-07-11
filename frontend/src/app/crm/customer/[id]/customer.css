@@ -144,7 +144,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
 }
 .add-activity-btn button {
   background: #2563eb;
@@ -288,6 +287,9 @@
 .status-badge.lead {
   background: #fef3c7;
   color: #d97706;
+}
+.total-activities {
+  color: #6b7280;
 }
 /* Mobile */
 

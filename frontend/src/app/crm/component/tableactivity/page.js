@@ -18,6 +18,7 @@ export default function TableActivity({ customer }) {
       </td>
 
       <td className="notes-cell">{customer?.notes ?? "-"}</td>
+      <td className="notes-cell">{customer?.performedBy ?? "-"}</td>
     </tr>
   );
 }
