@@ -5,14 +5,14 @@ export default function CardCustomersPage({ customer, handleDeleteButton }) {
     <>
       <div className="customer-card" key={customer._id}>
         <div className="customer-card-header">
-          <div className="avatar">{customer.firstName?.charAt(0) ?? "?"}</div>
+          <div className="avatar">{customer?.firstName?.charAt(0) ?? "?"}</div>
 
           <div>
             <h3>
-              {customer.firstName} {customer.lastName}
+              {customer?.firstName} {customer?.lastName}
             </h3>
 
-            <p>{customer.email}</p>
+            <p>{customer?.email}</p>
           </div>
         </div>
 
@@ -20,7 +20,7 @@ export default function CardCustomersPage({ customer, handleDeleteButton }) {
           <div>
             <span>Phone</span>
 
-            <strong>{customer.phone}</strong>
+            <strong>{customer?.phone}</strong>
           </div>
 
           <div>
@@ -34,7 +34,7 @@ export default function CardCustomersPage({ customer, handleDeleteButton }) {
               {" "}
               <button
                 className="btn-delete"
-                onClick={() => handleDeleteButton(customer._id)}
+                onClick={() => handleDeleteButton(customer?._id)}
               >
                 delete
               </button>
