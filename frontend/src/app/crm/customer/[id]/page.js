@@ -5,6 +5,8 @@ import Loading from "../../component/loading/loading";
 import { useParams } from "next/navigation";
 import { useCustomers } from "../../../../hook/useCustomers";
 import "./customer.css";
+import TableActivity from "../../component/tableactivity/page";
+import { useActivities } from "../../../../hook/useActivities";
 
 export default function CustomerPage() {
   const { id } = useParams();
@@ -12,6 +14,7 @@ export default function CustomerPage() {
   const { customer, isLoadingDetail, updateCustomer, isUpdating } =
     useCustomers(id);
 
+  const { activities } = useActivities(customer?._id);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,9 +59,17 @@ export default function CustomerPage() {
       setSuccessMessage(response.message || "Client updated successfully");
 
       setIsEditing(false);
+
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
     } catch (error) {
       setErrorMessage(error.message);
-      setSuccessMessage(false);
+      setSuccessMessage("");
+
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
     }
   };
   const handleChange = (field) => (e) => {
@@ -100,134 +111,180 @@ export default function CustomerPage() {
           </button>
         )}
       </div>
+      <div className="customer-info-section">
+        <div className="customer-card-page ">
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-      <div className="customer-card-page ">
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-        {successMessage && (
-          <div className="success-message">{successMessage}</div>
-        )}
-        <div className="section-title">
-          <h2>Customer Information</h2>
-        </div>
-
-        <div className="customer-info-wrapper">
-          <div className="customer-info-item">
-            <label>First Name</label>
-            <input
-              value={isEditing ? formData.firstName : customer.firstName}
-              readOnly={!isEditing}
-              onChange={handleChange("firstName")}
-            />
-          </div>
-
-          <div className="customer-info-item">
-            <label>Last Name</label>
-            <input
-              value={isEditing ? formData.lastName : customer.lastName}
-              readOnly={!isEditing}
-              onChange={handleChange("lastName")}
-            />
-          </div>
-
-          <div className="customer-info-item">
-            <label>Email</label>
-            <input
-              value={isEditing ? formData.email : customer.email}
-              readOnly={!isEditing}
-              onChange={handleChange("email")}
-            />
-          </div>
-
-          <div className="customer-info-item">
-            <label>Phone</label>
-            <input
-              value={isEditing ? formData.phone : customer.phone}
-              readOnly={!isEditing}
-              onChange={handleChange("phone")}
-            />
-          </div>
-
-          <div className="customer-info-item">
-            <label>ID Number</label>
-            <input
-              value={isEditing ? formData.idNumber : customer.idNumber}
-              readOnly={!isEditing}
-              onChange={handleChange("idNumber")}
-            />
-          </div>
-        </div>
-
-        <div className="address-section">
+          {successMessage && (
+            <div className="success-message">{successMessage}</div>
+          )}
           <div className="section-title">
-            <h2>Address</h2>
+            <h2>Customer Information</h2>
           </div>
-
           <div className="customer-info-wrapper">
             <div className="customer-info-item">
-              <label>City</label>
-              <input
-                value={
-                  isEditing
-                    ? formData.address.city
-                    : customer.address?.city || ""
-                }
-                readOnly={!isEditing}
-                onChange={handleAddressChange("city")}
-              />
+              <label>First Name</label>
+              {isEditing ? (
+                <input
+                  value={formData.firstName}
+                  onChange={handleChange("firstName")}
+                />
+              ) : (
+                <span>{customer.firstName || "-"}</span>
+              )}
             </div>
 
             <div className="customer-info-item">
-              <label>Street</label>
-              <input
-                value={
-                  isEditing
-                    ? formData.address.street
-                    : customer.address?.street || ""
-                }
-                readOnly={!isEditing}
-                onChange={handleAddressChange("street")}
-              />
+              <label>Last Name</label>
+              {isEditing ? (
+                <input
+                  value={formData.lastName}
+                  onChange={handleChange("lastName")}
+                />
+              ) : (
+                <span>{customer.lastName || "-"}</span>
+              )}
             </div>
 
             <div className="customer-info-item">
-              <label>House Number</label>
-              <input
-                value={
-                  isEditing
-                    ? formData.address.houseNumber
-                    : customer.address?.houseNumber || ""
-                }
-                readOnly={!isEditing}
-                onChange={handleAddressChange("houseNumber")}
-              />
+              <label>Email</label>
+              {isEditing ? (
+                <input
+                  value={formData.email}
+                  onChange={handleChange("email")}
+                />
+              ) : (
+                <span>{customer.email || "-"}</span>
+              )}
             </div>
 
             <div className="customer-info-item">
-              <label>Apartment</label>
-              <input
-                value={
-                  isEditing
-                    ? formData.address.apartment
-                    : customer.address?.apartment || ""
-                }
-                readOnly={!isEditing}
-                onChange={handleAddressChange("apartment")}
-              />
+              <label>Phone</label>
+              {isEditing ? (
+                <input
+                  value={formData.phone}
+                  onChange={handleChange("phone")}
+                />
+              ) : (
+                <span>{customer.phone || "-"}</span>
+              )}
             </div>
 
             <div className="customer-info-item">
-              <label>Entrance</label>
-              <input
-                value={
-                  isEditing
-                    ? formData.address.entrance
-                    : customer.address?.entrance || ""
-                }
-                readOnly={!isEditing}
-                onChange={handleAddressChange("entrance")}
-              />
+              <label>ID Number</label>
+              {isEditing ? (
+                <input
+                  value={formData.idNumber}
+                  onChange={handleChange("idNumber")}
+                />
+              ) : (
+                <span>{customer.idNumber || "-"}</span>
+              )}
             </div>
+          </div>
+          <div className="address-section">
+            <div className="section-title">
+              <h2>Address</h2>
+            </div>
+
+            <div className="customer-info-wrapper">
+              <div className="customer-info-item">
+                <label>City</label>
+                {isEditing ? (
+                  <input
+                    value={formData.address.city}
+                    onChange={handleAddressChange("city")}
+                  />
+                ) : (
+                  <span>{customer.address?.city || "-"}</span>
+                )}
+              </div>
+
+              <div className="customer-info-item">
+                <label>Street</label>
+                {isEditing ? (
+                  <input
+                    value={formData.address.street}
+                    onChange={handleAddressChange("street")}
+                  />
+                ) : (
+                  <span>{customer.address?.street || "-"}</span>
+                )}
+              </div>
+
+              <div className="customer-info-item">
+                <label>House Number</label>
+                {isEditing ? (
+                  <input
+                    value={formData.address.houseNumber}
+                    onChange={handleAddressChange("houseNumber")}
+                  />
+                ) : (
+                  <span>{customer.address?.houseNumber || "-"}</span>
+                )}
+              </div>
+
+              <div className="customer-info-item">
+                <label>Apartment</label>
+                {isEditing ? (
+                  <input
+                    value={formData.address.apartment}
+                    onChange={handleAddressChange("apartment")}
+                  />
+                ) : (
+                  <span>{customer.address?.apartment || "-"}</span>
+                )}
+              </div>
+
+              <div className="customer-info-item">
+                <label>Entrance</label>
+                {isEditing ? (
+                  <input
+                    value={formData.address.entrance}
+                    onChange={handleAddressChange("entrance")}
+                  />
+                ) : (
+                  <span>{customer.address?.entrance || "-"}</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="customer-activities">
+          <div className="header-activity">
+            <div className="title-activity">
+              <h2>customer avtivity</h2>
+            </div>
+            <div className="add-activity-btn">
+              <button> add activity</button>
+            </div>
+          </div>
+          <div className="table-container-two">
+            <table className="customers-table activity-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Customer</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {activities?.length > 0 ? (
+                  activities.map((activity) => (
+                    <TableActivity customer={activity} key={activity._id} />
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="empty-table">
+                      No activities found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

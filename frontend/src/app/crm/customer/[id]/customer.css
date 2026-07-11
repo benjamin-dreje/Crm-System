@@ -25,6 +25,13 @@
   font-size: 15px;
 }
 
+.customer-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  height: 100vh;
+}
+
 /* Save Button */
 
 .save-btn {
@@ -55,7 +62,6 @@
   background: #fff;
   border-radius: 18px;
   width: 100%;
-  max-width: 1000px;
   padding: 30px;
   box-shadow: 0 10px 30px #0000000f;
   gap: 10px;
@@ -133,6 +139,34 @@
   background: white;
 }
 
+.header-activity {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.add-activity-btn button {
+  background: #2563eb;
+
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 12px 26px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.add-activity-btn button:hover {
+  background: #1d4ed8;
+}
 /* Not Found */
 
 .not-found {
@@ -184,6 +218,11 @@
 
     gap: 20px;
   }
+  .header-activity {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
 
   .customer-card-page {
     padding: 20px;
@@ -191,7 +230,65 @@
     overflow-y: scroll;
   }
 }
+.activity-table {
+  margin-top: 20px;
+  width: 100%;
+}
 
+.customers-table th,
+.activity-table th {
+  text-align: left;
+  color: black;
+  padding: 16px;
+}
+
+.activity-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.customers-table .table-container-two tbody tr td:first-child,
+.activity-table tbody tr td:first-child {
+  border-left: 3px solid #10108b;
+  border-radius: 5px 0 0 5px;
+}
+
+.createdAt {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.notes-cell {
+  max-width: 300px;
+  color: #475569;
+}
+
+.empty-table {
+  text-align: center;
+  padding: 30px;
+  color: #94a3b8;
+}
+
+.status-badge.in_progress {
+  color: #2563eb;
+  background: #dbeafe;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.status-badge.closed_won {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status-badge.lead {
+  background: #fef3c7;
+  color: #d97706;
+}
 /* Mobile */
 
 @media (max-width: 600px) {
@@ -207,10 +304,24 @@
     height: 400px;
     overflow-y: scroll;
   }
+  .add-activity-btn {
+    width: 100%;
+  }
+  .add-activity-btn button {
+    width: 100%;
+  }
   .save-btn {
     width: 100%;
   }
+
   .customer-info-wrapper {
     flex-wrap: wrap;
+  }
+  .table-container-two {
+    overflow-y: auto;
+  }
+
+  .activity-table thead th {
+    background: white;
   }
 }

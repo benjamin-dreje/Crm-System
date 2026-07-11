@@ -33,7 +33,7 @@ export function useActivities(customerId) {
 
   return {
     // נתונים ומצבי טעינה של השליפה
-    activities: activitiesQuery.data,
+    activities: activitiesQuery.data?.activities || [],
     isLoadingActivities: activitiesQuery.isLoading,
     isErrorActivities: activitiesQuery.isError,
 
