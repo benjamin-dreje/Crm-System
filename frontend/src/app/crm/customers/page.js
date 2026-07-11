@@ -3,7 +3,7 @@
 import "./customers.css";
 import { useState } from "react";
 import { useCustomers } from "../../../hook/useCustomers";
-import CardCustomers from "../component/cardcustomers/page";
+import CardCustomers from "../component/cardcustomers/CardCustomers";
 import TableCustomers from "../component/cardTable/page";
 import Loading from "../component/loading/loading";
 
