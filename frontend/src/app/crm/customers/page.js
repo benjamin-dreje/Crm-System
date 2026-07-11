@@ -66,6 +66,10 @@ export default function CustomersPage() {
       }, 2000);
     } catch (error) {
       setErrorMessage(error.message);
+
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 2000);
     }
   };
 
