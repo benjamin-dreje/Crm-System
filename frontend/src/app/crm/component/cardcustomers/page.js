@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function CardCustomersPage({ customer, handleDeleteButton }) {
   return (
     <>
-      <div className="customer-card" key={customer._id}>
+      <div className="customer-card" key={customer?._id}>
         <div className="customer-card-header">
           <div className="avatar">{customer?.firstName?.charAt(0) ?? "?"}</div>
 
