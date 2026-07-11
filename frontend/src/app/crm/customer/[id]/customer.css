@@ -234,13 +234,6 @@
   width: 100%;
 }
 
-.customers-table th,
-.activity-table th {
-  text-align: left;
-  color: black;
-  padding: 16px;
-}
-
 .activity-table td {
   padding: 16px;
   border-bottom: 1px solid #e5e7eb;
@@ -249,13 +242,18 @@
 .activity-table tbody tr:hover {
   background: #f8fafc;
 }
-
-.customers-table .table-container-two tbody tr td:first-child,
 .activity-table tbody tr td:first-child {
   border-left: 3px solid #10108b;
   border-radius: 5px 0 0 5px;
 }
-
+.activity-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+table.activity-table th {
+  text-align: left;
+  padding: 16px;
+}
 .createdAt {
   color: #64748b;
   font-size: 14px;

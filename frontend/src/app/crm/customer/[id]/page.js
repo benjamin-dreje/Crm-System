@@ -262,7 +262,7 @@ export default function CustomerPage() {
             </div>
           </div>
           <div className="table-container-two">
-            <table className="customers-table activity-table">
+            <table className="activity-table">
               <thead>
                 <tr>
                   <th>Date</th>

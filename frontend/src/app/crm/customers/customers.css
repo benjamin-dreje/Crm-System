@@ -115,6 +115,7 @@
   color: #2563eb;
   text-decoration: none;
   font-weight: 600;
+  font-size: 14px;
 }
 
 .btn-view:hover {
@@ -215,7 +216,7 @@
 }
 
 .btn-delete {
-  background: #df867b50;
+  background: #df867b1f;
   color: #b32906;
   padding: 12px 20px;
   border: none;
