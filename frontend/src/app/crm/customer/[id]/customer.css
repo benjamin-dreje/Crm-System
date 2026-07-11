@@ -270,13 +270,6 @@ table.activity-table th {
   color: #94a3b8;
 }
 
-.in_progress {
-  color: #2563eb;
-  background: #dbeafe;
-  padding: 4px;
-  border-radius: 5px;
-}
-
 .status-badge.closed_won {
   background: #dcfce7;
   color: #16a34a;
@@ -288,6 +281,32 @@ table.activity-table th {
 }
 .total-activities {
   color: #6b7280;
+}
+.status-badge {
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-badge.in_progress {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.status-badge.closed_won {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-badge.lead {
+  background: #fee2e2;
+  color: #7a920c;
 }
 /* Mobile */
 

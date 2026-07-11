@@ -91,7 +91,12 @@
   font-weight: 600;
 }
 
-.status-badge.active {
+.status-badge.in_progress {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.status-badge.closed_won {
   background: #dcfce7;
   color: #15803d;
 }
@@ -101,9 +106,9 @@
   color: #b45309;
 }
 
-.status-badge.inactive {
+.status-badge.lead {
   background: #fee2e2;
-  color: #b91c1c;
+  color: #7a920c;
 }
 
 /* View Button */
