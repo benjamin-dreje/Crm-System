@@ -44,7 +44,7 @@ export function useCustomers(customerId = null) {
   });
 
   return {
-    customers: customersQuery.data,
+    customers: customersQuery.data?.customers || [],
     customer: customerDetailQuery.data,
     isLoadingCustomers: customersQuery.isLoading,
     isLoadingDetail: customerDetailQuery.isLoading,

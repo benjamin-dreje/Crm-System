@@ -1,12 +1,20 @@
 "use client";
 
-import Link from "next/link";
 import "./customers.css";
 import { useState } from "react";
 import { useCustomers } from "../../../hook/useCustomers";
+import CardCustomers from "../component/cardcustomers/page";
+import TableCustomers from "../component/cardTable/page";
+import Loading from "../component/loading/loading";
 
 export default function CustomersPage() {
-  const { createCustomer, isCreating, deleteCustomer } = useCustomers();
+  const {
+    customers,
+    isLoadingCustomers,
+    createCustomer,
+    isCreating,
+    deleteCustomer,
+  } = useCustomers();
   const [button, setButton] = useState(false);
   const [createdMessage, setCreatedMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,40 +36,9 @@ export default function CustomersPage() {
     },
   });
 
-  const dummyCustomers = [
-    {
-      id: "6a50bfac6e73ed95540993e7",
-      name: "Alex Johnson",
-      email: "alex@example.com",
-      status: "Active",
-      phone: "054545181",
-    },
-
-    {
-      id: "2",
-      name: "Sarah Miller",
-      email: "sarah@example.com",
-      status: "Pending",
-      phone: "556565656",
-    },
-
-    {
-      id: "3",
-      name: "Michael Brown",
-      email: "michael@example.com",
-      status: "Active",
-      phone: "556566665656",
-    },
-
-    {
-      id: "4",
-      name: "Emma Davis",
-      email: "emma@example.com",
-      status: "Inactive",
-      phone: "556562335656",
-    },
-  ];
-
+  if (isLoadingCustomers) {
+    return <Loading />;
+  }
   const handleCreateCustomer = async () => {
     try {
       await createCustomer(customer);
@@ -296,52 +273,12 @@ export default function CustomersPage() {
 
       {/* cards */}
       <div className="customers-cards">
-        {dummyCustomers.map((customer) => (
-          <div className="customer-card" key={customer.id}>
-            <div className="customer-card-header">
-              <div className="avatar">{customer.name.charAt(0)}</div>
-
-              <div>
-                <h3>{customer.name}</h3>
-
-                <p>{customer.email}</p>
-              </div>
-            </div>
-
-            <div className="customer-card-info">
-              <div>
-                <span>Phone</span>
-
-                <strong>{customer.phone}</strong>
-              </div>
-
-              <div>
-                <span>Status</span>
-
-                <span
-                  className={`status-badge ${customer.status.toLowerCase()}`}
-                >
-                  {customer.status}
-                </span>
-              </div>
-
-              <div>
-                <span>
-                  {" "}
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDeleteButton(customer.id)}
-                  >
-                    delete
-                  </button>
-                </span>
-              </div>
-            </div>
-
-            <Link href={`/crm/customer/${customer.id}`} className="btn-view">
-              View Profile
-            </Link>
-          </div>
+        {customers?.map((customer) => (
+          <CardCustomers
+            customer={customer}
+            handleDeleteButton={handleDeleteButton}
+            key={customer._id}
+          />
         ))}
       </div>
 
@@ -363,42 +300,12 @@ export default function CustomersPage() {
           </thead>
 
           <tbody>
-            {dummyCustomers.map((customer) => (
-              <tr key={customer.id}>
-                <td className="customer-name">{customer.name}</td>
-
-                <td>{customer.phone}</td>
-
-                <td>{customer.email}</td>
-
-                <td>
-                  <span
-                    className={`status-badge ${customer.status.toLowerCase()}`}
-                  >
-                    {customer.status}
-                  </span>
-                </td>
-
-                <td>
-                  <Link
-                    href={`/crm/customer/${customer.id}`}
-                    className="btn-view"
-                  >
-                    View Profile
-                  </Link>
-                </td>
-
-                <td>
-                  <button
-                    className="btn-delete"
-                    onClick={() => {
-                      handleDeleteButton(customer.id);
-                    }}
-                  >
-                    delete
-                  </button>
-                </td>
-              </tr>
+            {customers?.map((customer) => (
+              <TableCustomers
+                customer={customer}
+                handleDeleteButton={handleDeleteButton}
+                key={customer._id}
+              />
             ))}
           </tbody>
         </table>
