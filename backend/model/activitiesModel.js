@@ -13,7 +13,7 @@ const activitiesSchema = new mongoose.Schema(
     },
     statusAtTime: {
       type: String,
-      enum: ["lead", "in_progress", "closed_won"],
+      enum: ["lead", "in_progress", "closed_won", "pending", "rejected"],
       required: true,
     },
     prices: {

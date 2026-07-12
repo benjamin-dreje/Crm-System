@@ -289,24 +289,32 @@ table.activity-table th {
   font-weight: 600;
 }
 
+.status-badge.lead {
+  background: #e2e8f0;
+  color: #475569;
+}
+
 .status-badge.in_progress {
-  color: #2563eb;
-  background: #dbeafe;
-}
-
-.status-badge.closed_won {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.status-badge.pending {
   background: #fef3c7;
   color: #b45309;
 }
 
-.status-badge.lead {
+.status-badge.closed_won {
+  background: #bbf7d0;
+  color: #166534;
+}
+
+.status-badge.pending {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.status-badge.rejected {
   background: #fee2e2;
-  color: #7a920c;
+  color: #b91c1c;
+}
+.activity-time {
+  font-size: 12px;
 }
 /* Mobile */
 

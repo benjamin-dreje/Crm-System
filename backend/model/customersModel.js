@@ -27,6 +27,11 @@ const customersSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    status: {
+      type: String,
+      enum: ["lead", "in_progress", "closed_won", "pending", "rejected"],
+      default: "lead",
+    },
 
     address: {
       city: {

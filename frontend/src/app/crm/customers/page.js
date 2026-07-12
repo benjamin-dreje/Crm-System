@@ -20,6 +20,7 @@ export default function CustomersPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  console.log(customers);
   const [customer, setCustomer] = useState({
     firstName: "",
     lastName: "",

@@ -1,10 +1,10 @@
 import Link from "next/link";
-
 export default function TableCustomersPage({ customer, handleDeleteButton }) {
   return (
     <tr>
       <td className="customer-name">
-        {`${customer?.firstName ?? ""} ${customer?.lastName ?? ""}`.trim() || "-"}
+        {`${customer?.firstName ?? ""} ${customer?.lastName ?? ""}`.trim() ||
+          "-"}
       </td>
 
       <td>{customer?.phone ?? "-"}</td>
@@ -12,7 +12,11 @@ export default function TableCustomersPage({ customer, handleDeleteButton }) {
       <td>{customer?.email ?? "-"}</td>
 
       <td>
-        <span className="status-badge">{"unknown"}</span>
+        <span
+          className={`status-badge ${customer?.status?.toLowerCase() ?? "lead"}`}
+        >
+          {customer?.status ?? "lead"}
+        </span>
       </td>
 
       <td>

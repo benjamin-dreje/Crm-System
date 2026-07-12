@@ -1,6 +1,6 @@
-import { Activity } from "../model/activitiesModel.js"; 
-import { Customer } from "../model/customersModel.js"; 
-import { Sale } from "../model/salesModel.js"; 
+import { Activity } from "../model/activitiesModel.js";
+import { Customer } from "../model/customersModel.js";
+import { Sale } from "../model/salesModel.js";
 
 // 1. GET /customers/activity/:id - קבלת כל הפעילויות של לקוח ספציפי
 export const costomersActivity = async (req, res) => {
@@ -25,28 +25,33 @@ export const costomersActivity = async (req, res) => {
 // 2. POST /customers/activity - הוספת פעילות אמיתית ללקוח ושמירתה בבסיס הנתונים
 export const addcostomersActivity = async (req, res) => {
   try {
-    // ה-ID מגיע מכתובת ה-URL ששלח הפרונטאנד
     const { customerId } = req.params;
-    const customer = await Customer.findById(customerId);
-
-    if (!customer) {
-      return res.status(404).json({ message: "Customer not found" });
-    }
-
-    //מגיע מהיוזר
     const { statusAtTime, prices, notes } = req.body;
 
     if (!customerId || !statusAtTime) {
-      return res
-        .status(400)
-        .json({ message: "Customer ID and statusAtTime are required fields" });
+      return res.status(400).json({
+        message: "Customer ID and statusAtTime are required fields",
+      });
     }
+
+    const customer = await Customer.findById(customerId);
+
+    if (!customer) {
+      return res.status(404).json({
+        message: "Customer not found",
+      });
+    }
+
+    // עדכון הסטטוס הנוכחי של הלקוח
+    await Customer.findByIdAndUpdate(customerId, {
+      status: statusAtTime,
+    });
 
     const user = req.user;
     const employeeName = user?.userName ?? "System";
 
     const newActivity = new Activity({
-      customerId, // מקושר ללקוח המורחב
+      customerId,
       performedBy: employeeName,
       statusAtTime,
       prices,
@@ -65,7 +70,9 @@ export const addcostomersActivity = async (req, res) => {
       activity: fullActivity,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 

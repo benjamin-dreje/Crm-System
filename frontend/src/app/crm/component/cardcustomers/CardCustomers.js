@@ -26,7 +26,11 @@ export default function CardCustomersPage({ customer, handleDeleteButton }) {
           <div>
             <span>Status</span>
 
-            <span className="status-badge">unknown</span>
+            <span
+              className={`status-badge ${customer?.status?.toLowerCase() ?? "lead"}`}
+            >
+              {customer?.status ?? "lead"}
+            </span>
           </div>
 
           <div>
