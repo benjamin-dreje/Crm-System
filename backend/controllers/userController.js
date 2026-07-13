@@ -106,7 +106,7 @@ export const loginUser = async (req, res) => {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      secure: isProduction,
+      secure: true, // <-- שינוי ל-true קשיח
       sameSite: "none",
       path: "/",
     });
@@ -114,9 +114,9 @@ export const loginUser = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ימים
-      secure: isProduction,
+      secure: true, // <-- שינוי ל-true קשיח
       sameSite: "none",
-      path: "/", // חשוב להגביל את ה-Refresh Token רק לנתיב החידוש שלו
+      path: "/",
     });
 
     res.status(200).json({
@@ -180,7 +180,7 @@ export const refreshAccessToken = async (req, res) => {
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
       maxAge: 15 * 60 * 1000, // 15 דקות
-      secure: process.env.NODE_ENV === "production",
+      secure: true, // <-- שינוי ל-true קשיח
       sameSite: "none",
       path: "/",
     });
