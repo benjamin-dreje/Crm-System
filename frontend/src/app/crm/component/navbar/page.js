@@ -15,14 +15,16 @@ export default function Navbar() {
 
     setIsOpen(false);
 
-    await authUtils.clearToken();
+    try {
+      await authUtils.clearToken();
 
-    console.log("➡️ Redirecting");
+      console.log("➡️ Redirecting");
 
-    // זמנית לעצור כאן
-    // window.location.href = "/login";
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
-
   return (
     <>
       {/* Hamburger Button - Mobile Only */}
@@ -98,13 +100,9 @@ export default function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <button
-            className="logout-link"
-            onClick={() => {
-              alert("BUTTON WORKS");
-              handleLogout();
-            }}
-          ></button>
+          <button className="logout-link" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
 export const authUtils = {
   clearToken: async () => {
     try {
-      const res = await fetch("/api/users/logout", {
+      const res = await fetch("/api/proxy/users/logout", {
         method: "POST",
         credentials: "include",
       });
