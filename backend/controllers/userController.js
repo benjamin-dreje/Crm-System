@@ -196,6 +196,8 @@ export const refreshAccessToken = async (req, res) => {
 
 // 🚪 התנתקות מהמערכת (Logout - מוחק רק את הטוקן הנוכחי מהמערך)
 export const logoutUser = async (req, res) => {
+   console.log("🔥 LOGOUT HIT");
+  console.log("Cookies:", req.cookies);
   try {
     const refreshToken = req.cookies?.refreshToken;
 
