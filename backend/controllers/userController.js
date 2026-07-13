@@ -41,10 +41,15 @@ export const createUser = async (req, res) => {
       password: hashedPassword,
       role,
     });
+
     await newUser.save();
+
+    const userResponse = newUser.toObject();
+    delete userResponse.password;
+
     res
       .status(201)
-      .json({ message: "User created successfully", user: newUser });
+      .json({ message: "User created successfully", user: userResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -102,7 +107,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       secure: isProduction,
-      sameSite: isProduction ? "strict" : "lax",
+      sameSite: "none",
       path: "/",
     });
 
@@ -110,7 +115,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ימים
       secure: isProduction,
-      sameSite: isProduction ? "strict" : "lax",
+      sameSite: "none",
       path: "/", // חשוב להגביל את ה-Refresh Token רק לנתיב החידוש שלו
     });
 
@@ -176,7 +181,7 @@ export const refreshAccessToken = async (req, res) => {
       httpOnly: true,
       maxAge: 15 * 60 * 1000, // 15 דקות
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
 
