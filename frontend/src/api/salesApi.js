@@ -1,4 +1,4 @@
-const BASE_URL = "/api/proxy";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const salesApi = {
   // GET /sales/getSales
   getAll: async () => {

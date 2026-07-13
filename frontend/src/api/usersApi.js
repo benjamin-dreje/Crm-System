@@ -1,5 +1,5 @@
 // הוספת גיבוי קשיח עם /api בסוף בשורה הראשונה
-const BASE_URL = "/api/proxy";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 console.log("BASE_URL:", BASE_URL);
 
@@ -23,7 +23,6 @@ export const usersApi = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Failed to create user");
     return data;
-    
   },
 
   // POST /users/login - התחברות וקבלת העוגיות
