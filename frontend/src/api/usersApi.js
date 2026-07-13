@@ -1,5 +1,5 @@
 // הוספת גיבוי קשיח עם /api בסוף בשורה הראשונה
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const BASE_URL = "/api/proxy";
 
 console.log("BASE_URL:", BASE_URL);
 
@@ -34,7 +34,8 @@ export const usersApi = {
       credentials: "include",
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Login failed. Check your credentials.");
+    if (!res.ok)
+      throw new Error(data.message || "Login failed. Check your credentials.");
     return data;
   },
 

@@ -6,7 +6,7 @@ async function handler(request, { params }) {
   const path = params.proxy.join("/");
 
   const url = `${BACKEND_URL}/${path}`;
-
+  console.log("🔀 Proxying request to:", url);
   const headers = new Headers(request.headers);
 
   // לא להעביר Host של Vercel
