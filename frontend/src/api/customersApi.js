@@ -1,5 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
+const BASE_URL = "/api/proxy";
 export const customersApi = {
   getAll: async () => {
     const res = await fetch(`${BASE_URL}/customers`, {
