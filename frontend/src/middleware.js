@@ -20,6 +20,5 @@ export function middleware(request) {
 
 // Configure which routes to apply middleware to
 export const config = {
-  matcher: ["/crm/:path*"],
+  matcher: [],
 };
-
