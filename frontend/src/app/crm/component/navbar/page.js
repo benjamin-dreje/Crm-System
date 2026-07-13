@@ -19,7 +19,8 @@ export default function Navbar() {
 
     console.log("➡️ Redirecting");
 
-    window.location.href = "/login";
+    // זמנית לעצור כאן
+    // window.location.href = "/login";
   };
 
   return (
