@@ -97,10 +97,13 @@ export default function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <button className="logout-link" onClick={handleLogout}>
-            <span className="link-icon">logo</span>
-            <span>Logout</span>
-          </button>
+          <button
+            className="logout-link"
+            onClick={() => {
+              alert("BUTTON WORKS");
+              handleLogout();
+            }}
+          ></button>
         </div>
       </div>
     </>
