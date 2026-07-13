@@ -197,24 +197,31 @@ export const refreshAccessToken = async (req, res) => {
 // 🚪 התנתקות מהמערכת (Logout - מוחק רק את הטוקן הנוכחי מהמערך)
 export const logoutUser = async (req, res) => {
   try {
-    const { cookies } = req;
-    const refreshToken = cookies && cookies.refreshToken;
+    const refreshToken = req.cookies?.refreshToken;
 
     if (refreshToken) {
-      // מחיקת הטוקן הספציפי הזה בלבד מתוך מערך הטוקנים בדאטה-בייס ($pull)
       await Users.findOneAndUpdate(
         { refreshToken: refreshToken },
         { $pull: { refreshToken: refreshToken } },
-        { returnDocument: "after" },
       );
     }
 
-    // מחיקת שתי העוגיות מהדפדפן/פוסטמן על ידי פקיעת התוקף שלהן מיידית
-    res.clearCookie("accessToken", { path: "/" });
-    res.clearCookie("refreshToken", { path: "/" });
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    };
 
-    return res.status(200).json({ message: "Logged out successfully" });
+    res.clearCookie("accessToken", cookieOptions);
+    res.clearCookie("refreshToken", cookieOptions);
+
+    return res.status(200).json({
+      message: "Logged out successfully",
+    });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
