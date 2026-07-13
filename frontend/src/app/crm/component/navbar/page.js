@@ -11,8 +11,14 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
+    console.log("🚪 Logout clicked");
+
     setIsOpen(false);
+
     await authUtils.clearToken();
+
+    console.log("➡️ Redirecting");
+
     window.location.href = "/login";
   };
 
@@ -91,10 +97,10 @@ export default function Navbar() {
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <Link href="/login" className="logout-link" onClick={handleLogout}>
+          <button className="logout-link" onClick={handleLogout}>
             <span className="link-icon">logo</span>
             <span>Logout</span>
-          </Link>
+          </button>
         </div>
       </div>
     </>
