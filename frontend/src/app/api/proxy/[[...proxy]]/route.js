@@ -3,44 +3,73 @@ import { NextResponse } from "next/server";
 const BACKEND_URL = "https://crm-system-cxgw.onrender.com/api";
 
 async function handler(request, { params }) {
-  const path = params.proxy.join("/");
+  try {
+    const { proxy } = await params;
 
-  const url = `${BACKEND_URL}/${path}`;
-  console.log("🔀 Proxying request to:", url);
-  const headers = new Headers(request.headers);
+    const path = proxy.join("/");
+    const url = `${BACKEND_URL}/${path}`;
 
-  // לא להעביר Host של Vercel
-  headers.delete("host");
+    console.log("🔀 Proxy URL:", url);
+    console.log("🔀 Method:", request.method);
 
-  const body =
-    request.method === "GET" || request.method === "HEAD"
-      ? undefined
-      : await request.text();
+    const headers = new Headers(request.headers);
 
-  const response = await fetch(url, {
-    method: request.method,
-    headers,
-    body,
-  });
+    // לא להעביר Host של Vercel
+    headers.delete("host");
 
-  const data = await response.text();
+    const body =
+      request.method === "GET" || request.method === "HEAD"
+        ? undefined
+        : await request.text();
 
-  const res = new NextResponse(data, {
-    status: response.status,
-    headers: {
-      "content-type":
-        response.headers.get("content-type") || "application/json",
-    },
-  });
+    console.log("🔀 Body:", body);
 
-  // להעביר Cookies מה-Backend לדפדפן
-  const setCookie = response.headers.get("set-cookie");
+    const response = await fetch(url, {
+      method: request.method,
+      headers,
+      body,
+    });
 
-  if (setCookie) {
-    res.headers.append("set-cookie", setCookie);
+    console.log("🔀 Backend status:", response.status);
+
+    const data = await response.text();
+
+    console.log("🔀 Backend response:", data);
+
+    const res = new NextResponse(data || "{}", {
+      status: response.status,
+      headers: {
+        "content-type":
+          response.headers.get("content-type") || "application/json",
+      },
+    });
+
+    // להעביר Cookies מה-Backend לדפדפן
+    const setCookie = response.headers.get("set-cookie");
+
+    if (setCookie) {
+      res.headers.append("set-cookie", setCookie);
+    }
+
+    return res;
+  } catch (error) {
+    console.error("❌ Proxy error:", error);
+
+    return NextResponse.json(
+      {
+        error: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
   }
-
-  return res;
 }
 
-export { handler as GET, handler as POST, handler as PUT, handler as DELETE };
+export {
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as DELETE,
+  handler as PATCH,
+};

@@ -23,6 +23,7 @@ export const usersApi = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Failed to create user");
     return data;
+    
   },
 
   // POST /users/login - התחברות וקבלת העוגיות
