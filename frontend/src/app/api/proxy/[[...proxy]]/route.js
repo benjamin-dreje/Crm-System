@@ -44,11 +44,22 @@ async function handler(request, { params }) {
       },
     });
 
-    // להעביר Cookies מה-Backend לדפדפן
-    const setCookie = response.headers.get("set-cookie");
+    // להעביר את כל ה-Cookies מה-Backend לדפדפן
+    const cookies = response.headers.getSetCookie?.();
 
-    if (setCookie) {
-      res.headers.append("set-cookie", setCookie);
+    if (cookies && cookies.length > 0) {
+      cookies.forEach((cookie) => {
+        res.headers.append("set-cookie", cookie);
+        console.log("🍪 Forward cookie:", cookie);
+      });
+    } else {
+      // fallback במקרה שסביבת Node לא תומכת getSetCookie
+      const setCookie = response.headers.get("set-cookie");
+
+      if (setCookie) {
+        res.headers.append("set-cookie", setCookie);
+        console.log("🍪 Forward cookie:", setCookie);
+      }
     }
 
     return res;
