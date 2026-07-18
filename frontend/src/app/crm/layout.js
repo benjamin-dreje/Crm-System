@@ -1,7 +1,9 @@
 // crm layout
-
+export const metadata = {
+  title: "Benjamin System",
+};
 import Sidebar from "../crm/component/navbar/page"; // ודא שהנתיב לקומפוננט שלך נכון
-import  QueryProvider  from "../../provider/queryProvider";
+import QueryProvider from "../../provider/queryProvider";
 
 export default function CrmLayout({ children }) {
   return (
