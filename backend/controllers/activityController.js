@@ -2,6 +2,39 @@ import { Activity } from "../model/activitiesModel.js";
 import { Customer } from "../model/customersModel.js";
 import { Sale } from "../model/salesModel.js";
 
+// 4. GET /status - קבלת לידים שנסגרו ולידים בטיפול
+export const getCustomersByStatus = async (req, res) => {
+  try {
+    // 1. שליפת לידים שנסגרו בהצלחה
+    const closedLeads = await Customer.find({ status: "closed_won" }).sort({
+      updatedAt: -1,
+    });
+
+    const newLeads = await Customer.find({ status: "lead" }).sort({
+      updatedAt: -1,
+    });
+    // 2. שליפת לידים שנמצאים כרגע בטיפול
+    const inProgressLeads = await Customer.find({ status: "in_progress" }).sort(
+      { updatedAt: -1 },
+    );
+
+    res.status(200).json({
+      message: "Fetched leads successfully divided by status",
+      analytics: {
+        closedCount: closedLeads.length,
+        inProgressCount: inProgressLeads.length,
+        newLeads: newLeads.length,
+        totalLeads: closedLeads.length + inProgressLeads.length,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching leads by status",
+      error: error.message,
+    });
+  }
+};
+
 // 1. GET /customers/activity/:id - קבלת כל הפעילויות של לקוח ספציפי
 export const costomersActivity = async (req, res) => {
   try {
@@ -81,7 +114,9 @@ export const updateCustomerStatus = async (req, res) => {
   try {
     const { customerId } = req.params;
     const { activityId, status, amount } = req.body;
-    const userId = req.user.userId; // עדכון סטטוס הלקוח
+    const userId = req.user.userId;
+
+    // עדכון סטטוס הלקוח
     const updatedCustomer = await Customer.findByIdAndUpdate(
       customerId,
       { status },
@@ -109,17 +144,24 @@ export const updateCustomerStatus = async (req, res) => {
       });
     }
 
-    // יצירת מכירה אם נסגרה עסקה
+    // --- ניהול רשומת המכירה לפי הסטטוס החדש ---
     if (status === "closed_won") {
-      await Sale.create({
-        user: userId,
-        customer: customerId,
-        amount: amount || 0,
-      });
+      // אם העסקה נסגרה - מעדכנים מכירה קיימת או יוצרים חדשה במידה ואין
+      await Sale.findOneAndUpdate(
+        { customer: customerId },
+        {
+          user: userId,
+          amount: amount || 0,
+        },
+        { upsert: true, new: true },
+      );
+    } else if (status === "in_progress") {
+      // אם הליד חזר לטיפול - מוחקים את רשומת המכירה כדי שלא תספר באנליטיקות
+      await Sale.findOneAndDelete({ customer: customerId });
     }
 
     res.status(200).json({
-      message: "Status updated successfully",
+      message: "Status updated successfully and sales records synchronized",
       customer: updatedCustomer,
       activity: updatedActivity,
     });

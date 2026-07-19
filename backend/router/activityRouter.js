@@ -3,6 +3,7 @@ import {
   costomersActivity,
   addcostomersActivity,
   updateCustomerStatus,
+  getCustomersByStatus,
 } from "../controllers/activityController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -11,6 +12,7 @@ const router = express.Router();
 // הפעלת אבטחה גורפת על כל הפעילויות
 router.use(authMiddleware);
 
+router.get("/analytics/by-status", getCustomersByStatus);
 // GET /activity/:customerId - קבלת היסטוריית פעילות
 router.get("/:customerId", costomersActivity);
 

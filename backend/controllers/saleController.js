@@ -21,7 +21,12 @@ export async function getSales(req, res) {
       59,
       999,
     );
-
+    // 0. חישוב סך כל המכירות הכללי (מכל הזמנים)
+    const totalSalesCount = sales.length;
+    const totalSalesAmount = sales.reduce(
+      (sum, sale) => sum + (sale.amount || 0),
+      0,
+    );
     // 1. סינון מכירות של החודש הנוכחי וסיכומן
     const thisMonthSalesList = sales.filter(
       (sale) => new Date(sale.createdAt) >= startOfThisMonth,
@@ -53,10 +58,15 @@ export async function getSales(req, res) {
     res.json({
       allSales: sales,
       analytics: {
+        total: {
+          count: totalSalesCount,
+          totalAmount: totalSalesAmount,
+        },
         thisMonth: {
           count: thisMonthSalesList.length,
           totalAmount: thisMonthSalesSum,
         },
+
         lastMonth: {
           count: lastMonthSalesList.length,
           totalAmount: lastMonthSalesSum,

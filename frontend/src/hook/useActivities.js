@@ -11,38 +11,54 @@ export function useActivities(customerId) {
     enabled: !!customerId, // ירוץ רק אם קיים ID של לקוח
   });
 
-  // 2. מוטציה להוספת פעילות חדשה
+  // 2. חדש: שליפת אנליטיקות/סטטוסים כלליים של כל הפעילויות
+  const globalStatusQuery = useQuery({
+    queryKey: ["activitiesStatus"],
+    queryFn: activitiesApi.getActivitiesStatus,
+    // אם הנתונים האלו משמשים לדשבורד ראשי, אולי תרצה שהם יתרעננו ברקע
+    staleTime: 1000 * 60 * 5, // 5 דקות של נתונים "טריים"
+  });
+
+  // 3. מוטציה להוספת פעילות חדשה
   const addActivityMutation = useMutation({
     mutationFn: activitiesApi.create,
     onSuccess: () => {
       // מרענן את ציר הזמן של הפעילויות עבור הלקוח הזה
       queryClient.invalidateQueries({ queryKey: ["activities", customerId] });
+      // מרענן גם את הסטטיסטיקות הכלליות כי נוספה פעילות חדשה במערכת
+      queryClient.invalidateQueries({ queryKey: ["activitiesStatus"] });
     },
   });
 
-  // 3. מוטציה לעדכון סטטוס הלקוח (lead, in_progress, closed_won)
+  // 4. מוטציה לעדכון סטטוס הלקוח (in_progress, closed_won)
   const updateStatusMutation = useMutation({
     mutationFn: activitiesApi.updateStatus,
     onSuccess: () => {
-      // מרענן גם את הפעילויות וגם את פרטי הלקוח הכלליים כדי שהסטטוס החדש יוצג בכל המערכת
+      // מרענן את כל השילובים הרלוונטיים כדי שהטבלאות והדשבורדים יתעדכנו מיד
       queryClient.invalidateQueries({ queryKey: ["activities", customerId] });
       queryClient.invalidateQueries({ queryKey: ["customer", customerId] });
       queryClient.invalidateQueries({ queryKey: ["customers"] });
+      queryClient.invalidateQueries({ queryKey: ["activitiesStatus"] });
     },
   });
 
   return {
-    // נתונים ומצבי טעינה של השליפה
+    // --- נתוני הלקוח הספציפי ---
     activities: activitiesQuery.data?.activities || [],
     isLoadingActivities: activitiesQuery.isLoading,
     isErrorActivities: activitiesQuery.isError,
     count: activitiesQuery.data?.count || 0,
 
-    // פונקציות לביצוע פעולות מהקומפוננטה
-    addActivity: addActivityMutation.mutateAsync,
-    updateCustomerStatus: updateStatusMutation.mutateAsync,
+    // --- נתוני סטטוסים ואנליטיקות כלליות (החדש) ---
+    globalStatusData: globalStatusQuery.data,
+    isLoadingGlobalStatus: globalStatusQuery.isLoading,
+    isErrorGlobalStatus: globalStatusQuery.isError,
 
-    // לואודרים לכפתורים
+    // --- פונקציות לביצוע פעולות מהקומפוננטה ---
+    addActivity: addActivityMutation.mutateAsync,
+    updateCustomerStatus: updateStatusMutation.mutateAsync, // קריאה ישירה לפונקציית ה-PUT שלך
+
+    // --- לואודרים לכפתורים (Pending במקום isLoading בגרסאות החדשות של React Query) ---
     isAddingActivity: addActivityMutation.isPending,
     isUpdatingStatus: updateStatusMutation.isPending,
   };
