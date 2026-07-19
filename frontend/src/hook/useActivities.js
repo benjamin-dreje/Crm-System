@@ -1,36 +1,49 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { activitiesApi } from "../api/activitiesApi";
 
-export function useActivities(customerId) {
-  const queryClient = useQueryClient();
-
-  // 1. שליפת היסטוריית פעילות של לקוח ספציפי
-  const activitiesQuery = useQuery({
-    queryKey: ["activities", customerId],
-    queryFn: () => activitiesApi.getByCustomerId(customerId),
-    enabled: !!customerId, // ירוץ רק אם קיים ID של לקוח
-  });
-
-  // 2. חדש: שליפת אנליטיקות/סטטוסים כלליים של כל הפעילויות
+// ==========================================
+// 1. Hook עצמאי לאנליטיקות וסטטוסים גלובליים
+// ==========================================
+export function useActivitiesAnalytics() {
   const globalStatusQuery = useQuery({
     queryKey: ["activitiesStatus"],
     queryFn: activitiesApi.getActivitiesStatus,
-    // אם הנתונים האלו משמשים לדשבורד ראשי, אולי תרצה שהם יתרעננו ברקע
-    staleTime: 1000 * 60 * 5, // 5 דקות של נתונים "טריים"
+    staleTime: 1000 * 60 * 5, // 5 דקות של נתונים "טריים" בתוך ה-Cache
   });
 
-  // 3. מוטציה להוספת פעילות חדשה
+  return {
+    globalStatusData: globalStatusQuery.data,
+    isLoadingGlobalStatus: globalStatusQuery.isLoading,
+    isErrorGlobalStatus: globalStatusQuery.isError,
+    refetchGlobalStatus: globalStatusQuery.refetch,
+  };
+}
+
+// ==========================================
+// 2. Hook ממוקד לפעילויות של לקוח ספציפי
+// ==========================================
+export function useActivities(customerId) {
+  const queryClient = useQueryClient();
+
+  // שליפת היסטוריית פעילות של לקוח ספציפי
+  const activitiesQuery = useQuery({
+    queryKey: ["activities", customerId],
+    queryFn: () => activitiesApi.getByCustomerId(customerId),
+    enabled: !!customerId, // ירוץ רק אם קיים ID של לקוח (לא ירוץ בדף הבית!)
+  });
+
+  // מוטציה להוספת פעילות חדשה
   const addActivityMutation = useMutation({
     mutationFn: activitiesApi.create,
     onSuccess: () => {
       // מרענן את ציר הזמן של הפעילויות עבור הלקוח הזה
       queryClient.invalidateQueries({ queryKey: ["activities", customerId] });
-      // מרענן גם את הסטטיסטיקות הכלליות כי נוספה פעילות חדשה במערכת
+      // מרענן גם את הסטטיסטיקות הכלליות בדשבורד כי נוספה פעילות חדשה במערכת
       queryClient.invalidateQueries({ queryKey: ["activitiesStatus"] });
     },
   });
 
-  // 4. מוטציה לעדכון סטטוס הלקוח (in_progress, closed_won)
+  // מוטציה לעדכון סטטוס הלקוח (in_progress, closed_won)
   const updateStatusMutation = useMutation({
     mutationFn: activitiesApi.updateStatus,
     onSuccess: () => {
@@ -43,22 +56,17 @@ export function useActivities(customerId) {
   });
 
   return {
-    // --- נתוני הלקוח הספציפי ---
+    // נתוני הלקוח הספציפי
     activities: activitiesQuery.data?.activities || [],
     isLoadingActivities: activitiesQuery.isLoading,
     isErrorActivities: activitiesQuery.isError,
     count: activitiesQuery.data?.count || 0,
 
-    // --- נתוני סטטוסים ואנליטיקות כלליות (החדש) ---
-    globalStatusData: globalStatusQuery.data,
-    isLoadingGlobalStatus: globalStatusQuery.isLoading,
-    isErrorGlobalStatus: globalStatusQuery.isError,
-
-    // --- פונקציות לביצוע פעולות מהקומפוננטה ---
+    // פונקציות לביצוע פעולות
     addActivity: addActivityMutation.mutateAsync,
-    updateCustomerStatus: updateStatusMutation.mutateAsync, // קריאה ישירה לפונקציית ה-PUT שלך
+    updateCustomerStatus: updateStatusMutation.mutateAsync,
 
-    // --- לואודרים לכפתורים (Pending במקום isLoading בגרסאות החדשות של React Query) ---
+    // מצבי טעינה (Pending) עבור כפתורים
     isAddingActivity: addActivityMutation.isPending,
     isUpdatingStatus: updateStatusMutation.isPending,
   };
