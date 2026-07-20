@@ -24,7 +24,8 @@ export const getCustomersByStatus = async (req, res) => {
         closedCount: closedLeads.length,
         inProgressCount: inProgressLeads.length,
         newLeads: newLeads.length,
-        totalLeads: closedLeads.length + inProgressLeads.length,
+        totalLeads:
+          closedLeads.length + inProgressLeads.length + newLeads.length,
       },
     });
   } catch (error) {
