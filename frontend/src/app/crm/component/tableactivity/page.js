@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 // יבוא ההוק המרכזי שלך
 import { useActivities } from "../../../../hook/useActivities"; // וודא שהנתיב נכון
