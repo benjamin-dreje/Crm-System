@@ -33,12 +33,20 @@ export const activitiesApi = {
   },
   // הפונקציה החדשה לעדכון סטטוס ומכירה (PUT)
   updateStatus: async ({ customerId, activityId, status, amount }) => {
+    // בונה את ה-Body כך שיכיל amount רק אם קים ערך
+    const payload = {
+      status,
+      activityId,
+      ...(amount !== undefined && amount !== null && { amount }),
+    };
+
     const res = await fetch(`${BASE_URL}/activities/${customerId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ activityId, status, amount }),
+      body: JSON.stringify(payload),
       credentials: "include",
     });
+
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Failed to update status");
     return data;

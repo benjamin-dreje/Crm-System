@@ -9,10 +9,15 @@ export const getCustomersByStatus = async (req, res) => {
     const closedLeads = await Customer.find({ status: "closed_won" }).sort({
       updatedAt: -1,
     });
+    console.log("TOTAL CUSTOMERS IN DB:", await Customer.countDocuments({}));
 
-    const newLeads = await Customer.find({ status: "lead" }).sort({
-      updatedAt: -1,
-    });
+    const newLeads = await Customer.find({
+      $or: [
+        { status: "lead" },
+        { status: { $exists: false } },
+        { status: null },
+      ],
+    }).sort({ updatedAt: -1 });
     // 2. שליפת לידים שנמצאים כרגע בטיפול
     const inProgressLeads = await Customer.find({ status: "in_progress" }).sort(
       { updatedAt: -1 },

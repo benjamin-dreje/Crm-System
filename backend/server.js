@@ -50,7 +50,6 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
 startServer();
 
 // app.listen(PORT, () => {
