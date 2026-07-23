@@ -12,7 +12,7 @@ export default function TableActivity({
   const customerId = customer?.customerId?._id || customer?.customerId;
   const activityId = customer?._id;
 
-  // שימוש בהוק שלך!
+  // שימוש בהוק שלך
   const { updateCustomerStatus, isUpdatingStatus } = useActivities(customerId);
 
   // ניהול State מקומי לתצוגה ופופ-אפ
@@ -47,7 +47,7 @@ export default function TableActivity({
         if (onUpdateSuccess) onUpdateSuccess();
       } catch (error) {
         console.error("Failed to update status:", error);
-        alert("אירעה שגיאה בעדכון הסטטוס");
+        alert("Failed to update status");
       }
     }
   };
@@ -55,7 +55,7 @@ export default function TableActivity({
   // שמירת הסכום מהמודאל
   const handleSaveAmount = async () => {
     if (!closedAmount || Number(closedAmount) <= 0) {
-      alert("נא להזין סכום תקין");
+      alert("Please enter a valid amount");
       return;
     }
 
@@ -76,7 +76,7 @@ export default function TableActivity({
       if (onUpdateSuccess) onUpdateSuccess();
     } catch (error) {
       console.error("Failed to update status:", error);
-      alert("אירעה שגיאה בעדכון הסטטוס");
+      alert("Failed to update status");
     }
   };
 
@@ -88,91 +88,92 @@ export default function TableActivity({
   };
 
   return (
-    <>
-      <tr style={{ opacity: isUpdatingStatus ? 0.6 : 1 }}>
-        <td className="createdAt">
-          {customer?.createdAt ? (
-            <>
-              <div>
-                {new Date(customer.createdAt).toLocaleDateString("he-IL")}
-              </div>
-              <span className="activity-time">
-                {new Date(customer.createdAt).toLocaleTimeString("he-IL", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            </>
-          ) : (
-            "-"
+    <tr style={{ opacity: isUpdatingStatus ? 0.6 : 1 }}>
+      <td className="createdAt">
+        {customer?.createdAt ? (
+          <>
+            <div>
+              {new Date(customer.createdAt).toLocaleDateString("he-IL")}
+            </div>
+            <span className="activity-time">
+              {new Date(customer.createdAt).toLocaleTimeString("he-IL", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </>
+        ) : (
+          "-"
+        )}
+      </td>
+
+      {/* בחירת סטטוס */}
+      <td>
+        <select
+          value={pendingStatus || status}
+          onChange={handleStatusChange}
+          disabled={isUpdatingStatus}
+          className={`status-badge ${pendingStatus || status}`}
+        >
+          {!availableStatuses.some((s) => s.value === status) && status && (
+            <option value={status}>{status}</option>
           )}
-        </td>
 
-        {/* בחירת סטטוס */}
-        <td>
-          <select
-            value={pendingStatus || status}
-            onChange={handleStatusChange}
-            disabled={isUpdatingStatus}
-            className={`status-badge ${pendingStatus || status}`}
-          >
-            {!availableStatuses.some((s) => s.value === status) && status && (
-              <option value={status}>{status}</option>
-            )}
+          {availableStatuses.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label || item.value}
+            </option>
+          ))}
+        </select>
+      </td>
 
-            {availableStatuses.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label || item.value}
-              </option>
-            ))}
-          </select>
-        </td>
+      <td className="customer-name">
+        {`${customer?.customerId?.firstName ?? ""} ${
+          customer?.customerId?.lastName ?? ""
+        }`.trim() || "-"}
+      </td>
 
-        <td className="customer-name">
-          {`${customer?.customerId?.firstName ?? ""} ${
-            customer?.customerId?.lastName ?? ""
-          }`.trim() || "-"}
-        </td>
+      <td className="notes-cell">{customer?.notes ?? "-"}</td>
 
-        <td className="notes-cell">{customer?.notes ?? "-"}</td>
-        <td className="notes-cell">{customer?.performedBy ?? "-"}</td>
-      </tr>
+      <td className="notes-cell">
+        {customer?.performedBy ?? "-"}
 
-      {/* Pop-up להזנת סכום סגירה */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>סגירת עסקה</h3>
-            <p>בכמה נסגרה העסקה?</p>
+        {/* 🔧 המודאל מוכנס ישירות בתוך ה-td כדי למנוע את השגיאה ב-tbody */}
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Close Deal</h3>
+              <p>How much was the deal closed for?</p>
 
-            <input
-              type="number"
-              placeholder="הכנס סכום..."
-              value={closedAmount}
-              onChange={(e) => setClosedAmount(e.target.value)}
-              disabled={isUpdatingStatus}
-              autoFocus
-            />
-
-            <div className="modal-actions">
-              <button
-                onClick={handleSaveAmount}
+              <input
+                type="number"
+                placeholder="Enter deal amount..."
+                value={closedAmount}
+                onChange={(e) => setClosedAmount(e.target.value)}
                 disabled={isUpdatingStatus}
-                className="btn-confirm"
-              >
-                {isUpdatingStatus ? "שומר..." : "אישור ושמירה"}
-              </button>
-              <button
-                onClick={handleCancel}
-                disabled={isUpdatingStatus}
-                className="btn-cancel"
-              >
-                ביטול
-              </button>
+                autoFocus
+              />
+
+              <div className="modal-actions">
+                <button
+                  onClick={handleSaveAmount}
+                  disabled={isUpdatingStatus}
+                  className="btn-confirm"
+                >
+                  {isUpdatingStatus ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={handleCancel}
+                  disabled={isUpdatingStatus}
+                  className="btn-cancel"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </td>
+    </tr>
   );
 }
