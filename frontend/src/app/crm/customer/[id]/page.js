@@ -326,7 +326,7 @@ export default function CustomerPage() {
                   <option value="pending">pending</option>
                   <option value="in_progress">In Progress</option>
                   <option value="closed_won">Closed Won</option>
-                  <option value="reject">reject</option>
+                  <option value="rejected">rejected</option>
                 </select>
               </div>
 
