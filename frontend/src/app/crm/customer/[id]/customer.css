@@ -332,6 +332,9 @@ table.activity-table th {
 .activity-time {
   font-size: 12px;
 }
+.customer-name {
+  font-weight: 600;
+}
 
 /* קונטיינר הטופס במראה Card ממורכז */
 .add-activity-form {
