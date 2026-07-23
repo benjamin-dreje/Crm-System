@@ -40,6 +40,7 @@ export function useActivities(customerId) {
       queryClient.invalidateQueries({ queryKey: ["activities", customerId] });
       // מרענן גם את הסטטיסטיקות הכלליות בדשבורד כי נוספה פעילות חדשה במערכת
       queryClient.invalidateQueries({ queryKey: ["activitiesStatus"] });
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
     },
   });
 
@@ -51,6 +52,7 @@ export function useActivities(customerId) {
       queryClient.invalidateQueries({ queryKey: ["activities", customerId] });
       queryClient.invalidateQueries({ queryKey: ["customer", customerId] });
       queryClient.invalidateQueries({ queryKey: ["customers"] });
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
       queryClient.invalidateQueries({ queryKey: ["activitiesStatus"] });
     },
   });
