@@ -14,11 +14,22 @@ export default function CustomerPage() {
   const { customer, isLoadingDetail, updateCustomer, isUpdating } =
     useCustomers(id);
 
-  const { activities, count } = useActivities(customer?._id);
+  const { activities, count, addActivity, isAddingActivity } = useActivities(
+    customer?._id,
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // States חדשים לטיפול בהוספת Activity בלבד
+  const [showAddActivity, setShowAddActivity] = useState(false);
+  const [activityForm, setActivityForm] = useState({
+    statusAtTime: "in_progress",
+    prices: "",
+    notes: "",
+  });
+
   if (isLoadingDetail) return <Loading />;
 
   if (!customer) {
@@ -87,6 +98,33 @@ export default function CustomerPage() {
         [field]: e.target.value,
       },
     }));
+  };
+
+  // פונקציית השליחה החדשה להוספת Activity
+  const handleAddActivitySubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      await addActivity({
+        customerId: customer._id,
+        activityData: {
+          statusAtTime: activityForm.statusAtTime,
+          prices: Number(activityForm.prices) || 0,
+          notes: activityForm.notes,
+        },
+      });
+
+      setSuccessMessage("Activity added successfully!");
+      setShowAddActivity(false); // סגירת הטופס
+      setActivityForm({ statusAtTime: "in_progress", prices: "", notes: "" }); // איפוס הטופס
+
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      setErrorMessage(error.message || "Failed to add activity");
+      setTimeout(() => setErrorMessage(""), 3000);
+    }
   };
 
   return (
@@ -258,9 +296,74 @@ export default function CustomerPage() {
               <p className="total-activities">Total activities: {count || 0}</p>
             </div>
             <div className="add-activity-btn">
-              <button> add activity</button>
+              <button
+                className={showAddActivity ? "cancel-btn" : ""}
+                onClick={() => setShowAddActivity((prev) => !prev)}
+              >
+                {showAddActivity ? "Cancel" : "+ Add Activity"}
+              </button>
             </div>
           </div>
+
+          {/* טופס הוספה שנפתח רק בלחיצה על הכפתור */}
+          {showAddActivity && (
+            <form
+              onSubmit={handleAddActivitySubmit}
+              className="add-activity-form"
+            >
+              <div className="form-group">
+                <label>Status:</label>
+                <select
+                  value={activityForm.statusAtTime}
+                  onChange={(e) =>
+                    setActivityForm({
+                      ...activityForm,
+                      statusAtTime: e.target.value,
+                    })
+                  }
+                >
+                  <option value="lead">lead</option>
+                  <option value="pending">pending</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="closed_won">Closed Won</option>
+                  <option value="reject">reject</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  placeholder="Price / Amount"
+                  value={activityForm.prices}
+                  onChange={(e) =>
+                    setActivityForm({ ...activityForm, prices: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Notes:</label>
+                <input
+                  type="text"
+                  placeholder="Notes"
+                  value={activityForm.notes}
+                  onChange={(e) =>
+                    setActivityForm({ ...activityForm, notes: e.target.value })
+                  }
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="save-btn"
+                disabled={isAddingActivity}
+              >
+                {isAddingActivity ? "Saving..." : "Save Activity"}
+              </button>
+            </form>
+          )}
+
           <div className="table-container-two">
             <table className="activity-table">
               <thead>
@@ -280,7 +383,7 @@ export default function CustomerPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="empty-table">
+                    <td colSpan="5" className="empty-table">
                       No activities found
                     </td>
                   </tr>

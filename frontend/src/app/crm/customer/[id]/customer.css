@@ -29,7 +29,6 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  height: 100vh;
 }
 
 /* Save Button */
@@ -181,6 +180,19 @@
 
   color: #ef4444;
 }
+
+/* עיצוב כפתור Cancel (אדום) */
+.add-activity-btn button.cancel-btn {
+  background-color: #ef4444; /* צבע אדום נעים */
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+/* אפקט Hover כשהוא במצב Cancel */
+.add-activity-btn button.cancel-btn:hover {
+  background-color: #dc2626; /* אדום מעט כהה יותר בהרחפה */
+  border-color: #dc2626;
+}
 .success-message {
   background: #dcfce7;
   color: #166534;
@@ -315,6 +327,140 @@ table.activity-table th {
 }
 .activity-time {
   font-size: 12px;
+}
+
+/* קונטיינר הטופס במראה Card ממורכז */
+.add-activity-form {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px;
+
+  /* מרכוז במסכים גדולים */
+  max-width: 800px;
+  margin: 0 auto 32px auto;
+
+  /* עיצוב Card מרחף */
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.08),
+    0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  /* גריד שדות */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto;
+  gap: 16px;
+  align-items: flex-end;
+  transition: all 0.3s ease;
+}
+
+/* עיצוב כל שדה (Label + Input) */
+.add-activity-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* לייבלים */
+.add-activity-form label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* עיצוב אחיד לכל ה-Inputs וה-Select */
+.add-activity-form input,
+.add-activity-form select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+  box-sizing: border-box;
+}
+
+/* אפקט פוקוס - כשלוחצים על שדה */
+.add-activity-form input:focus,
+.add-activity-form select:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* עיצוב מותאם ל-Select (חץ מעוצב) */
+.add-activity-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%6b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: left 12px center; /* תואם לעברית - לשנות ל-right אם האתר באנגלית */
+  background-size: 16px;
+  padding-left: 36px;
+}
+
+.add-activity-form select option {
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 10px;
+}
+
+/* כפתור שמירה */
+.add-activity-form .save-btn {
+  height: 42px;
+  padding: 0 24px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.add-activity-form .save-btn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.add-activity-form .save-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.add-activity-form .save-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* התאמה למובייל (טלפונים) - שומר על המבנה הטבעי */
+@media (max-width: 640px) {
+  .add-activity-form {
+    grid-template-columns: 1fr; /* השדות יורדים שורה אחר שורה במובייל */
+    padding: 18px;
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* צל קל יותר למובייל */
+  }
+
+  .add-activity-form .save-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
 }
 /* Mobile */
 
