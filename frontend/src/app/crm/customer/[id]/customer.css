@@ -187,7 +187,11 @@
   color: #ffffff;
   border-color: #ef4444;
 }
-
+.modal-overlay {
+  background-color: cadetblue;
+  padding: 10px;
+  border-radius: 20px;
+}
 /* אפקט Hover כשהוא במצב Cancel */
 .add-activity-btn button.cancel-btn:hover {
   background-color: #dc2626; /* אדום מעט כהה יותר בהרחפה */
