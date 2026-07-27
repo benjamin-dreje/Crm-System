@@ -95,8 +95,12 @@
 
 /* Responsive UI */
 /* ===========================
-   Mobile Hamburger Menu
+   Mobile Header & Hamburger
 =========================== */
+
+.mobile-header {
+  display: none;
+}
 
 .hamburger-btn {
   display: none;
@@ -107,13 +111,27 @@
 }
 
 @media (max-width: 768px) {
+  .mobile-header {
+    z-index: 998;
+    pointer-events: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #f5f5f5eb;
+  }
+  .sidebar-brand {
+    display: none;
+  }
+
   .hamburger-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    top: 15px;
-    left: 15px;
     width: 48px;
     height: 48px;
     border: none;
@@ -122,9 +140,21 @@
     color: #fff;
     font-size: 28px;
     cursor: pointer;
-    z-index: 1001;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    pointer-events: auto;
   }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e293b;
+    pointer-events: auto;
+  }
+
+  /* צבע כתום מותאם לשם ה-CRM במובייל */
 
   .sidebar-overlay {
     display: block;

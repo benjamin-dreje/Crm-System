@@ -21,7 +21,7 @@ export default function Navbar() {
     setIsOpen(false);
 
     try {
-      await logout(); 
+      await logout();
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -29,10 +29,18 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Hamburger Button - Mobile Only */}
-      <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)}>
-        ☰
-      </button>
+      {/* Top Bar / Hamburger + Brand - Mobile Only */}
+      <div className="mobile-header">
+        <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)}>
+          ☰
+        </button>
+        <div className="mobile-brand">
+          <span className="brand-icon">
+            <i className="fa-solid fa-chart-pie"></i>
+          </span>
+          <span className="brand-name-orange">CRM System</span>
+        </div>
+      </div>
 
       {/* Dark Overlay */}
       {isOpen && (
@@ -43,7 +51,9 @@ export default function Navbar() {
       <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
         {/* Logo */}
         <div className="sidebar-brand">
-          <span className="brand-icon">logo</span>
+          <span className="brand-icon">
+            <i className="fa-solid fa-chart-pie"></i>
+          </span>
           <span>CRM System</span>
         </div>
 
