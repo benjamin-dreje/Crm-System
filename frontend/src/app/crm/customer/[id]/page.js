@@ -131,7 +131,7 @@ export default function CustomerPage() {
       <div className="customer-details-header">
         <div>
           <h1>Customer Details</h1>
-          <p>Manage customer information</p>
+          <p>Manage customer information add activity , update and close deals</p>
         </div>
 
         {isEditing ? (

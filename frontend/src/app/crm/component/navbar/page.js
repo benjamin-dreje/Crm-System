@@ -53,7 +53,9 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className={`menu-link ${pathname === "/crm" ? "active" : ""}`}
             >
-              <span className="link-icon">logo</span>
+              <span className="link-icon">
+                <i className="fa-solid fa-chart-line"></i>
+              </span>
               <span>Dashboard</span>
             </Link>
           </li>
@@ -66,21 +68,10 @@ export default function Navbar() {
                 pathname === "/crm/customers" ? "active" : ""
               }`}
             >
-              <span className="link-icon">logo</span>
+              <span className="link-icon">
+                <i className="fa-solid fa-users"></i>
+              </span>
               <span>Customers</span>
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              href="/crm/profile"
-              onClick={() => setIsOpen(false)}
-              className={`menu-link ${
-                pathname === "/crm/profile" ? "active" : ""
-              }`}
-            >
-              <span className="link-icon">logo</span>
-              <span>Profile</span>
             </Link>
           </li>
 
@@ -89,11 +80,27 @@ export default function Navbar() {
               href="/crm/employees"
               onClick={() => setIsOpen(false)}
               className={`menu-link ${
-                pathname === "/crm/settings" ? "active" : ""
+                pathname === "/crm/employees" ? "active" : ""
               }`}
             >
-              <span className="link-icon">logo</span>
+              <span className="link-icon">
+                <i className="fa-solid fa-user-group"></i>
+              </span>
               <span>employees</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/crm/profile"
+              onClick={() => setIsOpen(false)}
+              className={`menu-link ${
+                pathname === "/crm/profile" ? "active" : ""
+              }`}
+            >
+              <span className="link-icon">
+                <i className="fa-solid fa-user"></i>
+              </span>
+              <span>Profile</span>
             </Link>
           </li>
         </ul>
@@ -101,6 +108,7 @@ export default function Navbar() {
         {/* Footer */}
         <div className="sidebar-footer">
           <button className="logout-link" onClick={handleLogout}>
+            <i className="fa-solid fa-right-from-bracket"></i>
             Logout
           </button>
         </div>

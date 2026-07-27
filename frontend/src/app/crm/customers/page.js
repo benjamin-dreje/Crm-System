@@ -257,7 +257,7 @@ export default function CustomersPage() {
         <div>
           <h1>Customers Management</h1>
 
-          <p>View, edit and manage all your CRM customers.</p>
+          <p>View, add and manage customers.</p>
         </div>
 
         <button className="btn-add" onClick={() => setButton(true)}>

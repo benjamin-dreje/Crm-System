@@ -1,0 +1,147 @@
+.employees-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.employees-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+.track {
+  color: #6b7280;
+  margin-top: 8px;
+}
+.ep1 {
+  color: #475569;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* טבלה */
+.table-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.responsive-table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  padding: 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.responsive-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-size: 0.925rem;
+}
+
+.responsive-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* עיצוב פריטים בודדים */
+.font-semibold {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.amount-text {
+  font-weight: 600;
+  color: #10b981; /* ירוק לכסף */
+}
+
+.role-badge {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.error-message {
+  color: #ef4444;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
+}
+
+/* --- התאמה רספונסיבית למובייל (Mobile Responsive) --- */
+@media (max-width: 768px) {
+  .table-wrapper {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .responsive-table,
+  .responsive-table thead,
+  .responsive-table tbody,
+  .responsive-table th,
+  .responsive-table td,
+  .responsive-table tr {
+    display: block;
+  }
+
+  /* הסתרת הכותרות הרגילות של הטבלה במובייל */
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tr {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: right;
+  }
+
+  .responsive-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* הוספת הליבלים השמאליים לפי ה-data-label במובייל */
+  .responsive-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.85rem;
+    text-align: left;
+  }
+}

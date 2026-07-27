@@ -2,21 +2,14 @@
 import "./profile.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hook/useAuth";
+import Loading from "../component/loading/loading";
 
 export default function ProfilePage() {
   const { user } = useAuth();
- 
 
   // אם עדיין לא עלינו בדפדפן
   if (!user) {
-    return (
-      <div
-        className="profile-page"
-        style={{ padding: "2rem", textAlign: "center" }}
-      >
-        <h2>טוען...</h2>
-      </div>
-    );
+    return <Loading></Loading>;
   }
 
   // אם אין משתמש
