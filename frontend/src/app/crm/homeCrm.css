@@ -283,12 +283,6 @@
     justify-content: space-between;
   }
   /* Cards Design */
-  .analytics-card {
-    padding: 1.5rem;
-  }
-  .analytics-card-header {
-    margin-bottom: 0.75rem;
-  }
 }
 
 .error-content {
@@ -321,6 +315,12 @@
 @media (min-width: 480px) {
   .analytics-retry-btn {
     align-self: center;
+  }
+  .analytics-card {
+    padding: 1.5rem;
+  }
+  .analytics-card-header {
+    margin-bottom: 0.75rem;
   }
 }
 
