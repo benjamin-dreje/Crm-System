@@ -19,6 +19,19 @@ export default function CustomersPage() {
   const [createdMessage, setCreatedMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [search, setSearch] = useState("");
+
+  const filteredCustomers = customers?.filter((customer) => {
+    const searchValue = search.toLowerCase();
+
+    return (
+      customer.firstName?.toLowerCase().includes(searchValue) ||
+      customer.lastName?.toLowerCase().includes(searchValue) ||
+      customer.email?.toLowerCase().includes(searchValue) ||
+      customer.phone?.includes(searchValue) ||
+      customer.idNumber?.includes(searchValue)
+    );
+  });
 
   console.log(customers);
   const [customer, setCustomer] = useState({
@@ -273,12 +286,14 @@ export default function CustomersPage() {
           type="text"
           placeholder="Search customers by name, email or phone number..."
           className="search-input"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
       {/* cards */}
       <div className="customers-cards">
-        {customers?.map((customer) => (
+        {filteredCustomers?.map((customer) => (
           <CardCustomers
             customer={customer}
             handleDeleteButton={handleDeleteButton}
@@ -305,7 +320,7 @@ export default function CustomersPage() {
           </thead>
 
           <tbody>
-            {customers?.map((customer) => (
+            {filteredCustomers?.map((customer) => (
               <TableCustomers
                 customer={customer}
                 handleDeleteButton={handleDeleteButton}
