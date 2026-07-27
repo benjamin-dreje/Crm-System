@@ -5,6 +5,7 @@ import {
   loginUser,
   refreshAccessToken,
   logoutUser,
+  deleteUser,
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import authAdmin from "../middleware/authAdmin.js"; // קובץ נפרד
