@@ -316,12 +316,6 @@
   .analytics-retry-btn {
     align-self: center;
   }
-  .analytics-card {
-    padding: 1.5rem;
-  }
-  .analytics-card-header {
-    margin-bottom: 0.75rem;
-  }
 }
 
 .analytics-retry-btn:hover {
