@@ -19,7 +19,7 @@ export default function ProfilePage() {
         className="profile-page"
         style={{ padding: "2rem", textAlign: "center" }}
       >
-        <h2>אינך מחובר למערכת.</h2>
+        <h2> You are not connected</h2>
       </div>
     );
   }
@@ -55,12 +55,12 @@ export default function ProfilePage() {
 
             <div className="detail-item">
               <span className="detail-label">Email Address:</span>
-              <span className="detail-value">{user.email || "לא צוין"}</span>
+              <span className="detail-value">{user.email || "-"}</span>
             </div>
 
             <div className="detail-item">
               <span className="detail-label">Phone Number:</span>
-              <span className="detail-value">{user.phone || "לא צוין"}</span>
+              <span className="detail-value">{user.phone || "-"}</span>
             </div>
 
             <div className="detail-item">
