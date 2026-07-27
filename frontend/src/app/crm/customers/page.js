@@ -282,6 +282,8 @@ export default function CustomersPage() {
       )}
       {errorMessage && <div className="error">{errorMessage}</div>}
       <div className="search-container">
+        <i className="fa-solid fa-magnifying-glass search-icon"></i>
+
         <input
           type="text"
           placeholder="Search customers by name, email or phone number..."
