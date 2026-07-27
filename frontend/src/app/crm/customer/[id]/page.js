@@ -116,7 +116,7 @@ export default function CustomerPage() {
 
       setSuccessMessage("Activity added successfully!");
       setShowAddActivity(false); // סגירת הטופס
-      setActivityForm({ statusAtTime: "in_progress", prices: "", notes: "" }); // איפוס הטופס
+      setActivityForm({ statusAtTime: "in_progress",  notes: "" }); // איפוס הטופס
 
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
