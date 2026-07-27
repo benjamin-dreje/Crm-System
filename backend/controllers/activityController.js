@@ -93,7 +93,6 @@ export const addcostomersActivity = async (req, res) => {
       customerId,
       performedBy: employeeName,
       statusAtTime,
-      prices,
       notes,
     });
 
