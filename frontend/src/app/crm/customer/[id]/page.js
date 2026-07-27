@@ -26,7 +26,6 @@ export default function CustomerPage() {
   const [showAddActivity, setShowAddActivity] = useState(false);
   const [activityForm, setActivityForm] = useState({
     statusAtTime: "in_progress",
-    prices: "",
     notes: "",
   });
 
@@ -131,7 +130,9 @@ export default function CustomerPage() {
       <div className="customer-details-header">
         <div>
           <h1>Customer Details</h1>
-          <p>Manage customer information add activity , update and close deals</p>
+          <p>
+            Manage customer information add activity , update and close deals
+          </p>
         </div>
 
         {isEditing ? (
