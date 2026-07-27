@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../hook/useAuth";
 import { useSales } from "../../../hook/useSales";
@@ -9,46 +9,40 @@ import "./employees.css";
 
 export default function EmployeesPage() {
   const router = useRouter();
-  const { user } = useAuth(); // וודא ש-useAuth מחזיר גם isLoadingUser במידת הצורך
+  const {
+    user,
+    users = [],
+    isLoadingUsers,
+    createNewUser,
+    isCreatingUser,
+    deleteUser,
+  } = useAuth();
   const { sales, isLoadingSales, isErrorSales } = useSales();
 
-  // נרמול ה-Role לאותיות קטנות למניעת בעיות של Case-Sensitivity
+  // States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [formError, setFormError] = useState("");
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    role: "employee",
+  });
+
   const normalizedRole = user?.role?.toLowerCase()?.trim();
   const isAdmin = normalizedRole === "admin" || normalizedRole === "manager";
 
-  // הדפסה לדיבאג - פתח את ה-Console (F12) בדפדפן ובדוק מה מודפס כאן!
   useEffect(() => {
-    if (user) {
-      console.log("👤 Current User Data:", user);
-      console.log(
-        "🏷️ Detected Role:",
-        user.role,
-        "-> Normalized:",
-        normalizedRole,
-      );
-      console.log("🛡️ Is Admin/Manager?", isAdmin);
-
-      if (!isAdmin) {
-        console.warn("⛔ User is NOT admin/manager. Redirecting to /crm...");
-        router.replace("/crm");
-      }
+    if (user && !isAdmin) {
+      router.replace("/crm");
     }
-  }, [user, isAdmin, normalizedRole, router]);
+  }, [user, isAdmin, router]);
 
-  // 1. אם המשתמש טרם נטען, מציגים Loading
-  if (!user) {
-    return <Loading />;
-  }
-
-  // 2. חסימה מידית! אם המשתמש אינו מנהל - עצור רנדור מיד (ללא תלות ב-Sales)
-  if (!isAdmin) {
-    return null;
-  }
-
-  // 3. רק עבור מנהלים - בודקים טעינת נתוני Sales
-  if (isLoadingSales || !sales) {
-    return <Loading />;
-  }
+  if (!user) return <Loading />;
+  if (!isAdmin) return null;
+  if (isLoadingSales || !sales || isLoadingUsers) return <Loading />;
 
   if (isErrorSales) {
     return (
@@ -58,10 +52,60 @@ export default function EmployeesPage() {
     );
   }
 
-  const employees = sales?.employeesAnalytics || [];
+  // 🔍 1. סינון טבלת ה-Sales Analytics לפי שם
+  const allSalesEmployees = sales?.employeesAnalytics || [];
+  const filteredSalesEmployees = allSalesEmployees.filter((emp) => {
+    const name = emp.user?.name || emp.user?.fullName || "";
+    return name.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  // 🔍 2. סינון טבלת ניהול המשתמשים למטה לפי שם
+  const filteredUsers = users.filter((u) =>
+    (u.name || "").toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  // הוספת עובד חדש
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    setFormError("");
+    setSuccessMessage("");
+
+    try {
+      await createNewUser(newUser);
+
+      // איפוס הטופס
+      setNewUser({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        role: "employee",
+      });
+
+      // ✅ הצגת הודעת הצלחה מעוצבת
+      setSuccessMessage("Employee added successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (err) {
+      setFormError(err.message || "Failed to add employee");
+    }
+  };
+
+  // מחיקת עובד
+  const handleDeleteUser = async (userId) => {
+    setFormError("");
+    setSuccessMessage("");
+    try {
+      await deleteUser(userId);
+      setSuccessMessage("Employee deleted successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (err) {
+      setFormError(err.message || "Failed to delete employee");
+    }
+  };
 
   return (
     <div className="employees-container">
+      {/* Header */}
       <div className="employees-header">
         <div className="title-e">
           <h1>Employees sales</h1>
@@ -70,11 +114,26 @@ export default function EmployeesPage() {
           </p>
         </div>
         <div className="ep1">
-          <span className="total-badge">{employees.length} Employees</span>
+          <span className="total-badge">
+            {filteredSalesEmployees.length} Employees
+          </span>
         </div>
       </div>
 
-      {employees.length === 0 ? (
+      {/* 🔍 Search Input Top */}
+      <div className="search-bar-wrapper" style={{ marginBottom: "20px" }}>
+        <i className="fa-solid fa-magnifying-glass search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search employee by name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      {/* Top Table - Employees Sales Analytics */}
+      {filteredSalesEmployees.length === 0 ? (
         <div className="no-data">No employee data found</div>
       ) : (
         <div className="table-wrapper">
@@ -91,7 +150,7 @@ export default function EmployeesPage() {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => (
+              {filteredSalesEmployees.map((employee, index) => (
                 <tr key={employee.user?._id || employee._id || index}>
                   <td data-label="Name" className="font-semibold">
                     {employee.user?.name ||
@@ -101,7 +160,7 @@ export default function EmployeesPage() {
                   <td data-label="Email">{employee.user?.email || "-"}</td>
                   <td data-label="Role">
                     <span className="role-badge">
-                      {employee.user?.role || "User"}
+                      {employee.user?.role || "employee"}
                     </span>
                   </td>
                   <td data-label="Sales Count">{employee.salesCount ?? 0}</td>
@@ -122,6 +181,127 @@ export default function EmployeesPage() {
           </table>
         </div>
       )}
+
+      <div className="bottom-sections-grid">
+        {/* קוביה 1: ניהול עובדים */}
+        <div className="manage-card">
+          <h3>Employees Management</h3>
+          <p className="sub-title">Quick management of system users</p>
+
+          <div className="mini-table-wrapper">
+            <table className="mini-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((u) => (
+                    <tr key={u._id}>
+                      <td data-label="Name" className="font-semibold">
+                        {u.name}
+                      </td>
+                      <td data-label="Email">{u.email}</td>
+                      <td data-label="Role">
+                        <span className="mini-role-badge">
+                          {u.role || "employee"}
+                        </span>
+                      </td>
+                      <td data-label="Actions">
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDeleteUser(u._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" style={{ textAlign: "center" }}>
+                      No users found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* קוביה 2: הוספת עובד חדש */}
+        <div className="add-card">
+          <h3>Add New Employee</h3>
+          <p className="sub-title">Create credentials for a new team member</p>
+
+          <form onSubmit={handleCreateUser} className="add-employee-form">
+            {/* הודעת הצלחה/שגיאה מעוצבת בתוך הטאב */}
+            {successMessage && (
+              <p
+                className="success-text"
+                style={{ color: "green", fontWeight: "bold" }}
+              >
+                {successMessage}
+              </p>
+            )}
+            {formError && <p className="error-text">{formError}</p>}
+
+            <input
+              type="text"
+              placeholder="Full Name"
+              required
+              value={newUser.name}
+              onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            />
+            <input
+              type="email"
+              placeholder="Email Address"
+              required
+              value={newUser.email}
+              onChange={(e) =>
+                setNewUser({ ...newUser, email: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Phone Number"
+              required
+              value={newUser.phone}
+              onChange={(e) =>
+                setNewUser({ ...newUser, phone: e.target.value })
+              }
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              value={newUser.password}
+              onChange={(e) =>
+                setNewUser({ ...newUser, password: e.target.value })
+              }
+            />
+            <select
+              value={newUser.role}
+              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            >
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
+            </select>
+
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={isCreatingUser}
+            >
+              {isCreatingUser ? "Adding..." : "+ Add Employee"}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

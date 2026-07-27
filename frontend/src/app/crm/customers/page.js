@@ -15,32 +15,19 @@ export default function CustomersPage() {
     isCreating,
     deleteCustomer,
   } = useCustomers();
+
+  // States
   const [button, setButton] = useState(false);
-  const [createdMessage, setCreatedMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [search, setSearch] = useState("");
 
-  const filteredCustomers = customers?.filter((customer) => {
-    const searchValue = search.toLowerCase();
-
-    return (
-      customer.firstName?.toLowerCase().includes(searchValue) ||
-      customer.lastName?.toLowerCase().includes(searchValue) ||
-      customer.email?.toLowerCase().includes(searchValue) ||
-      customer.phone?.includes(searchValue) ||
-      customer.idNumber?.includes(searchValue)
-    );
-  });
-
-  console.log(customers);
   const [customer, setCustomer] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     idNumber: "",
-
     address: {
       city: "",
       street: "",
@@ -50,21 +37,47 @@ export default function CustomersPage() {
     },
   });
 
+  // פונקציות עזר להצגת הודעות ואיפוסן אוטומטית
+  const showSuccess = (msg) => {
+    setSuccessMessage(msg);
+    setErrorMessage("");
+    setTimeout(() => setSuccessMessage(""), 3000);
+  };
+
+  const showError = (msg) => {
+    setErrorMessage(msg);
+    setSuccessMessage("");
+    setTimeout(() => setErrorMessage(""), 3000);
+  };
+
+  const filteredCustomers = customers?.filter((cust) => {
+    const searchValue = search.toLowerCase();
+    return (
+      cust.firstName?.toLowerCase().includes(searchValue) ||
+      cust.lastName?.toLowerCase().includes(searchValue) ||
+      cust.email?.toLowerCase().includes(searchValue) ||
+      cust.phone?.includes(searchValue) ||
+      cust.idNumber?.includes(searchValue)
+    );
+  });
+
   if (isLoadingCustomers) {
     return <Loading />;
   }
+
+  // הוספת לקוח
   const handleCreateCustomer = async () => {
     try {
       await createCustomer(customer);
-      setCreatedMessage(true);
+      showSuccess("Customer created successfully!");
 
+      // איפוס הטופס
       setCustomer({
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
         idNumber: "",
-
         address: {
           city: "",
           street: "",
@@ -74,45 +87,42 @@ export default function CustomersPage() {
         },
       });
 
+      // סגירת טופס ההוספה לאחר שנייה וחצי
       setTimeout(() => {
-        setCreatedMessage(false);
         setButton(false);
-      }, 2000);
+      }, 1500);
     } catch (error) {
-      setErrorMessage(error.message);
-
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 2000);
+      showError(error.message || "Failed to create customer");
     }
   };
 
+  // מחיקת לקוח
   const handleDeleteButton = async (id) => {
     try {
       const response = await deleteCustomer(id);
-
-      setSuccessMessage(response.message || "Customer deleted successfully");
-
-      setTimeout(() => {
-        setSuccessMessage("");
-        setErrorMessage("");
-      }, 2000);
+      showSuccess(response?.message || "Customer deleted successfully");
     } catch (error) {
-      setErrorMessage(error.message);
-      setSuccessMessage("");
+      showError(error.message || "Failed to delete customer");
     }
   };
 
+  // ---------------------------------------------------------------------------
+  // 1. מסך טופס הוספת לקוח
+  // ---------------------------------------------------------------------------
   if (button) {
     return (
       <div className="add-customer-form">
-        {createdMessage && (
-          <div className="userIsCreatedMessage">
-            {"Customer created successfully"}
+        {/* הודעות הצלחה ושגיאה בתוך הטופס */}
+        {successMessage && (
+          <div className="alert-message alert-success">
+            <i className="fa-solid fa-circle-check"></i> {successMessage}
           </div>
         )}
-
-        {errorMessage && <div className="error">{errorMessage} </div>}
+        {errorMessage && (
+          <div className="alert-message alert-error">
+            <i className="fa-solid fa-triangle-exclamation"></i> {errorMessage}
+          </div>
+        )}
 
         <h2>Add New Customer</h2>
 
@@ -123,55 +133,36 @@ export default function CustomersPage() {
               placeholder="First Name"
               value={customer.firstName}
               onChange={(e) =>
-                setCustomer({
-                  ...customer,
-                  firstName: e.target.value,
-                })
+                setCustomer({ ...customer, firstName: e.target.value })
               }
             />
-
             <input
               placeholder="Last Name"
               value={customer.lastName}
               onChange={(e) =>
-                setCustomer({
-                  ...customer,
-                  lastName: e.target.value,
-                })
+                setCustomer({ ...customer, lastName: e.target.value })
               }
             />
-
             <input
               type="email"
               placeholder="Email"
               value={customer.email}
               onChange={(e) =>
-                setCustomer({
-                  ...customer,
-                  email: e.target.value,
-                })
+                setCustomer({ ...customer, email: e.target.value })
               }
             />
-
             <input
               placeholder="Phone"
               value={customer.phone}
               onChange={(e) =>
-                setCustomer({
-                  ...customer,
-                  phone: e.target.value,
-                })
+                setCustomer({ ...customer, phone: e.target.value })
               }
             />
-
             <input
               placeholder="ID Number"
               value={customer.idNumber}
               onChange={(e) =>
-                setCustomer({
-                  ...customer,
-                  idNumber: e.target.value,
-                })
+                setCustomer({ ...customer, idNumber: e.target.value })
               }
             />
           </div>
@@ -184,92 +175,90 @@ export default function CustomersPage() {
               onChange={(e) =>
                 setCustomer({
                   ...customer,
-                  address: {
-                    ...customer.address,
-                    city: e.target.value,
-                  },
+                  address: { ...customer.address, city: e.target.value },
                 })
               }
             />
-
             <input
               placeholder="Street"
               value={customer.address.street}
               onChange={(e) =>
                 setCustomer({
                   ...customer,
-                  address: {
-                    ...customer.address,
-                    street: e.target.value,
-                  },
+                  address: { ...customer.address, street: e.target.value },
                 })
               }
             />
-
             <input
               placeholder="House Number"
               value={customer.address.houseNumber}
               onChange={(e) =>
                 setCustomer({
                   ...customer,
-                  address: {
-                    ...customer.address,
-                    houseNumber: e.target.value,
-                  },
+                  address: { ...customer.address, houseNumber: e.target.value },
                 })
               }
             />
-
             <input
               placeholder="Apartment"
               value={customer.address.apartment}
               onChange={(e) =>
                 setCustomer({
                   ...customer,
-                  address: {
-                    ...customer.address,
-                    apartment: e.target.value,
-                  },
+                  address: { ...customer.address, apartment: e.target.value },
                 })
               }
             />
-
             <input
               placeholder="Entrance"
               value={customer.address.entrance}
               onChange={(e) =>
                 setCustomer({
                   ...customer,
-                  address: {
-                    ...customer.address,
-                    entrance: e.target.value,
-                  },
+                  address: { ...customer.address, entrance: e.target.value },
                 })
               }
             />
           </div>
         </div>
 
-        <button
-          className="btn-save"
-          onClick={handleCreateCustomer}
-          disabled={isCreating}
-        >
-          {isCreating ? "Saving..." : "Save Customer"}
-        </button>
+        <div className="form-actions">
+          <button
+            className="btn-save"
+            onClick={handleCreateCustomer}
+            disabled={isCreating}
+          >
+            {isCreating ? "Saving..." : "Save Customer"}
+          </button>
 
-        <button className="btn-back" onClick={() => setButton(false)}>
-          Back
-        </button>
+          <button className="btn-back" onClick={() => setButton(false)}>
+            Back
+          </button>
+        </div>
       </div>
     );
   }
+
+  // ---------------------------------------------------------------------------
+  // 2. מסך רשימת הלקוחות הראשית
+  // ---------------------------------------------------------------------------
   return (
     <div className="customers-page">
+      {/* הודעות הצלחה ושגיאה בראש העמוד */}
+      {successMessage && (
+        <div className="alert-message alert-success">
+          <i className="fa-solid fa-circle-check"></i> {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="alert-message alert-error">
+          <i className="fa-solid fa-triangle-exclamation"></i> {errorMessage}
+        </div>
+      )}
+
       <div className="page-header">
         <div>
           <h1>Customers Management</h1>
-
           <p>View, add and manage customers.</p>
         </div>
 
@@ -277,13 +266,10 @@ export default function CustomersPage() {
           + Add Customer
         </button>
       </div>
-      {successMessage && (
-        <div className="userIsCreatedMessage">{successMessage}</div>
-      )}
-      {errorMessage && <div className="error">{errorMessage}</div>}
+
+      {/* חיפוש */}
       <div className="search-container">
         <i className="fa-solid fa-magnifying-glass search-icon"></i>
-
         <input
           type="text"
           placeholder="Search customers by name, email or phone number..."
@@ -293,40 +279,35 @@ export default function CustomersPage() {
         />
       </div>
 
-      {/* cards */}
+      {/* כרטיסיות */}
       <div className="customers-cards">
-        {filteredCustomers?.map((customer) => (
+        {filteredCustomers?.map((cust) => (
           <CardCustomers
-            customer={customer}
+            customer={cust}
             handleDeleteButton={handleDeleteButton}
-            key={customer._id}
+            key={cust._id}
           />
         ))}
       </div>
 
-      {/* table */}
+      {/* טבלה */}
       <div className="table-container">
         <table className="customers-table">
           <thead>
             <tr>
               <th>Name</th>
-
               <th>Phone</th>
-
               <th>Email</th>
-
               <th>Status</th>
-
               <th>Actions</th>
             </tr>
           </thead>
-
           <tbody>
-            {filteredCustomers?.map((customer) => (
+            {filteredCustomers?.map((cust) => (
               <TableCustomers
-                customer={customer}
+                customer={cust}
                 handleDeleteButton={handleDeleteButton}
-                key={customer._id}
+                key={cust._id}
               />
             ))}
           </tbody>

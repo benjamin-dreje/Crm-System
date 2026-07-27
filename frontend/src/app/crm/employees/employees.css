@@ -1,3 +1,8 @@
+.employees-container {
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
 .employees-header {
   display: flex;
   align-items: center;
@@ -24,7 +29,7 @@
   font-weight: 600;
 }
 
-/* טבלה */
+/* טבלה ראשי */
 .table-wrapper {
   background: #ffffff;
   border-radius: 12px;
@@ -32,6 +37,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  width: 100%;
 }
 
 .responsive-table {
@@ -68,7 +74,7 @@
 
 .amount-text {
   font-weight: 600;
-  color: #10b981; /* ירוק לכסף */
+  color: #10b981;
 }
 
 .role-badge {
@@ -93,8 +99,203 @@
   color: #94a3b8;
 }
 
-/* --- התאמה רספונסיבית למובייל (Mobile Responsive) --- */
+/* Search Input Styling */
+.search-bar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: #888;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+}
+
+/* Bottom Grid for two boxes */
+.bottom-sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.manage-card,
+.add-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  box-sizing: border-box;
+}
+
+.manage-card h3,
+.add-card h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.sub-title {
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* Mini Table Styling */
+.mini-table-wrapper {
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.mini-table th,
+.mini-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.mini-table th {
+  color: #64748b;
+  font-weight: 600;
+  background-color: #f8fafc;
+}
+
+.mini-role-badge {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.delete-btn {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Form Styling */
+.add-employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.add-employee-form input,
+.add-employee-form select {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 13.5px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-employee-form input:focus,
+.add-employee-form select:focus {
+  border-color: #2563eb;
+}
+
+.submit-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submit-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* --- 📱 התאמה רספונסיבית למובייל (בלבד) --- */
 @media (max-width: 768px) {
+  .employees-container {
+    padding: 12px;
+  }
+
+  .employees-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .employees-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .search-bar-wrapper {
+    max-width: 100%;
+  }
+
+  .bottom-sections-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .manage-card,
+  .add-card {
+    padding: 16px;
+  }
+
+  /* ביטול מבנה הטבלאות הסטנדרטי במובייל להצגה ככרטיסיות */
   .table-wrapper {
     box-shadow: none;
     background: transparent;
@@ -105,43 +306,62 @@
   .responsive-table tbody,
   .responsive-table th,
   .responsive-table td,
-  .responsive-table tr {
+  .responsive-table tr,
+  .mini-table,
+  .mini-table thead,
+  .mini-table tbody,
+  .mini-table th,
+  .mini-table td,
+  .mini-table tr {
     display: block;
   }
 
-  /* הסתרת הכותרות הרגילות של הטבלה במובייל */
-  .responsive-table thead {
+  /* הסתרת כותרות הטבלאות במובייל */
+  .responsive-table thead,
+  .mini-table thead {
     display: none;
   }
 
-  .responsive-table tr {
+  /* הפיכת שורות הטבלה לכרטיסיות נפרדות */
+  .responsive-table tr,
+  .mini-table tr {
     background: #ffffff;
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
   }
 
-  .responsive-table td {
+  .responsive-table td,
+  .mini-table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6rem 0;
+    padding: 8px 0;
     border-bottom: 1px solid #f1f5f9;
     text-align: right;
+    word-break: break-word;
   }
 
-  .responsive-table td:last-child {
+  .responsive-table td:last-child,
+  .mini-table td:last-child {
     border-bottom: none;
   }
 
-  /* הוספת הליבלים השמאליים לפי ה-data-label במובייל */
-  .responsive-table td::before {
+  /* הצגת הליבלים של העמודות בצד שמאל של כל שורה בכרטיסייה */
+  .responsive-table td::before,
+  .mini-table td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #64748b;
     font-size: 0.85rem;
     text-align: left;
+    padding-right: 12px;
+    white-space: nowrap;
+  }
+
+  .mini-table-wrapper {
+    max-height: none; /* מאפשר לכל העובדים להופיע בצורה רציפה בתוך הכרטיסייה במובייל */
   }
 }

@@ -10,9 +10,6 @@ export function useAuth() {
   const userQuery = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => {
-      const cached = queryClient.getQueryData(["currentUser"]);
-      if (cached) return cached;
-
       if (typeof window !== "undefined") {
         const savedUser = localStorage.getItem("currentUser");
         if (savedUser) {
@@ -20,22 +17,28 @@ export function useAuth() {
             return JSON.parse(savedUser);
           } catch (e) {
             console.error("Failed to parse user from localStorage", e);
+            localStorage.removeItem("currentUser");
           }
         }
       }
       return null;
     },
+    // מקבל נתונים התחלתיים מהקאש במידה וקיימים
+    initialData: () => queryClient.getQueryData(["currentUser"]),
     staleTime: Infinity,
   });
 
-  // 2. שליפת כל המשתמשים (המשתנה שהיה חסר)
+  // 2. בדיקה אם המשתמש מחובר
+  const isAuth = userQuery.data !== null && userQuery.data !== undefined;
+
+  // 3. שליפת כל המשתמשים (רק אם מחובר)
   const usersQuery = useQuery({
     queryKey: ["users"],
     queryFn: usersApi.getAll,
-    enabled: false,
+    enabled: isAuth,
   });
 
-  // 3. מוטציה להתחברות
+  // 4. מוטציה להתחברות
   const loginMutation = useMutation({
     mutationFn: usersApi.login,
     onSuccess: (data) => {
@@ -47,7 +50,7 @@ export function useAuth() {
     },
   });
 
-  // 4. מוטציה להתנתקות
+  // 5. מוטציה להתנתקות
   const logoutMutation = useMutation({
     mutationFn: usersApi.logout,
     onSuccess: () => {
@@ -59,27 +62,55 @@ export function useAuth() {
     },
   });
 
-  // 5. מוטציה ליצירת משתמש
+  // 6. מוטציה ליצירת משתמש
   const createUserMutation = useMutation({
     mutationFn: usersApi.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["sales"],
+          refetchType: "all",
+        }),
+      ]);
+    },
+  });
+
+  // 7. מוטציה למחיקת משתמש
+  const deleteUserMutation = useMutation({
+    mutationFn: usersApi.delete,
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["sales"],
+          refetchType: "all",
+        }),
+      ]);
     },
   });
 
   return {
     user: userQuery.data,
 
-    users: usersQuery.data,
+    users: usersQuery.data || [],
     fetchUsers: usersQuery.refetch,
     isLoadingUsers: usersQuery.isLoading,
 
     login: loginMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
     createNewUser: createUserMutation.mutateAsync,
+    deleteUser: deleteUserMutation.mutateAsync,
 
     isLoggingIn: loginMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
     isCreatingUser: createUserMutation.isPending,
+    isDeletingUser: deleteUserMutation.isPending,
   };
 }

@@ -19,6 +19,13 @@ export const activitiesApi = {
     if (!res.ok) throw new Error(data.message || "Failed to fetch activities");
     return data;
   },
+  delete: async (userId) => {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Failed to delete user");
+    return res.json();
+  },
 
   create: async ({ customerId, activityData }) => {
     const res = await fetch(`${BASE_URL}/activities/${customerId}`, {

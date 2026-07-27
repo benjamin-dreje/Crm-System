@@ -18,7 +18,7 @@ router.get("/", authMiddleware, getUsers);
 router.post("/create", authMiddleware, authAdmin, createUser);
 // POST /users/login - התחברות וקבלת העוגיות
 router.post("/login", loginUser);
-
+router.delete("/:id", authMiddleware, authAdmin, deleteUser); // <--- ראוט מחיקה חדש!
 // POST /users/refresh - חידוש אוטומטי של ה-Access Token
 router.post("/refresh", refreshAccessToken);
 
