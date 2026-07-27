@@ -1,12 +1,51 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../../hook/useAuth";
 import { useSales } from "../../../hook/useSales";
 import Loading from "../component/loading/loading";
 import "./employees.css";
 
 export default function EmployeesPage() {
+  const router = useRouter();
+  const { user } = useAuth(); // וודא ש-useAuth מחזיר גם isLoadingUser במידת הצורך
   const { sales, isLoadingSales, isErrorSales } = useSales();
 
+  // נרמול ה-Role לאותיות קטנות למניעת בעיות של Case-Sensitivity
+  const normalizedRole = user?.role?.toLowerCase()?.trim();
+  const isAdmin = normalizedRole === "admin" || normalizedRole === "manager";
+
+  // הדפסה לדיבאג - פתח את ה-Console (F12) בדפדפן ובדוק מה מודפס כאן!
+  useEffect(() => {
+    if (user) {
+      console.log("👤 Current User Data:", user);
+      console.log(
+        "🏷️ Detected Role:",
+        user.role,
+        "-> Normalized:",
+        normalizedRole,
+      );
+      console.log("🛡️ Is Admin/Manager?", isAdmin);
+
+      if (!isAdmin) {
+        console.warn("⛔ User is NOT admin/manager. Redirecting to /crm...");
+        router.replace("/crm");
+      }
+    }
+  }, [user, isAdmin, normalizedRole, router]);
+
+  // 1. אם המשתמש טרם נטען, מציגים Loading
+  if (!user) {
+    return <Loading />;
+  }
+
+  // 2. חסימה מידית! אם המשתמש אינו מנהל - עצור רנדור מיד (ללא תלות ב-Sales)
+  if (!isAdmin) {
+    return null;
+  }
+
+  // 3. רק עבור מנהלים - בודקים טעינת נתוני Sales
   if (isLoadingSales || !sales) {
     return <Loading />;
   }
@@ -25,12 +64,12 @@ export default function EmployeesPage() {
     <div className="employees-container">
       <div className="employees-header">
         <div className="title-e">
-          {" "}
           <h1>Employees sales</h1>
-          <p className="track">Manage your team performance and track employee sales activity.</p>
+          <p className="track">
+            Manage your team performance and track employee sales activity.
+          </p>
         </div>
         <div className="ep1">
-          {" "}
           <span className="total-badge">{employees.length} Employees</span>
         </div>
       </div>

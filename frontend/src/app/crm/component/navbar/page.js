@@ -3,28 +3,30 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "../../../../hook/useAuth"; // וודא שהנתיב ל-Hook נכון
 import "./sidebar.css";
-import { authUtils } from "../../../../utils/auth";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  // שליפת המשתמש ופונקציית ההתנתקות מתוך ה-Hook
+  const { user, logout } = useAuth();
+
+  // בדיקה אם המשתמש הוא מנהל (או לפי role שמתאים אצלכם, למשל 'ADMIN' או 'MANAGER')
+  const isAdmin = user?.role === "admin" || user?.role === "manager";
+
   const handleLogout = async () => {
     console.log("🚪 Logout clicked");
-
     setIsOpen(false);
 
     try {
-      await authUtils.clearToken();
-
-      console.log("➡️ Redirecting");
-
-      window.location.href = "/login";
+      await logout(); 
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
+
   return (
     <>
       {/* Hamburger Button - Mobile Only */}
@@ -75,20 +77,23 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li>
-            <Link
-              href="/crm/employees"
-              onClick={() => setIsOpen(false)}
-              className={`menu-link ${
-                pathname === "/crm/employees" ? "active" : ""
-              }`}
-            >
-              <span className="link-icon">
-                <i className="fa-solid fa-user-group"></i>
-              </span>
-              <span>employees</span>
-            </Link>
-          </li>
+          {isAdmin && (
+            <li>
+              <Link
+                href="/crm/employees"
+                onClick={() => setIsOpen(false)}
+                className={`menu-link ${
+                  pathname === "/crm/employees" ? "active" : ""
+                }`}
+              >
+                <span className="link-icon">
+                  <i className="fa-solid fa-user-group"></i>
+                </span>
+                <span>Employees</span>
+              </Link>
+            </li>
+          )}
+
           <li>
             <Link
               href="/crm/profile"
