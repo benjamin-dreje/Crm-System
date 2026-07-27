@@ -108,7 +108,7 @@ export default function EmployeesPage() {
       {/* Header */}
       <div className="employees-header">
         <div className="title-e">
-          <h1>Employees sales</h1>
+          <h1>Employees </h1>
           <p className="track">Manage your team performance</p>
         </div>
         <div className="ep1">
