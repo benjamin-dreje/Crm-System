@@ -6,55 +6,78 @@ export function useAuth() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  // 1. שליפת כל המשתמשים (שימושי למסכי ניהול צוות/עובדים ב-CRM)
+  // 1. שליפת המשתמש המחובר
+  const userQuery = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => {
+      const cached = queryClient.getQueryData(["currentUser"]);
+      if (cached) return cached;
+
+      if (typeof window !== "undefined") {
+        const savedUser = localStorage.getItem("currentUser");
+        if (savedUser) {
+          try {
+            return JSON.parse(savedUser);
+          } catch (e) {
+            console.error("Failed to parse user from localStorage", e);
+          }
+        }
+      }
+      return null;
+    },
+    staleTime: Infinity,
+  });
+
+  // 2. שליפת כל המשתמשים (המשתנה שהיה חסר)
   const usersQuery = useQuery({
     queryKey: ["users"],
     queryFn: usersApi.getAll,
-    enabled: false, // לא ירוץ אוטומטית, נפעיל אותו רק במסך הניהול המתאים באמצעות refetch
+    enabled: false,
   });
 
-  // 2. מוטציה להתחברות משתמש
+  // 3. מוטציה להתחברות
   const loginMutation = useMutation({
     mutationFn: usersApi.login,
     onSuccess: (data) => {
-      // שומרים את נתוני המשתמש ב-Cache של TanStack Query
       queryClient.setQueryData(["currentUser"], data.user);
-      // מעבירים את המשתמש ישירות למערכת ה-CRM
+      if (typeof window !== "undefined") {
+        localStorage.setItem("currentUser", JSON.stringify(data.user));
+      }
       router.push("/crm");
     },
   });
 
-  // 3. מוטציה להתנתקות מהמערכת
+  // 4. מוטציה להתנתקות
   const logoutMutation = useMutation({
     mutationFn: usersApi.logout,
     onSuccess: () => {
-      // מנקים את כל ה-Cache של האפליקציה כדי שלא יישאר מידע של הלקוחות בזיכרון
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("currentUser");
+      }
       queryClient.clear();
-      // מחזירים לעמוד הלוגין
       router.push("/login");
     },
   });
 
-  // 4. מוטציה ליצירת עובד/משתמש חדש (דורש הרשאת אדמין בבאקנד שלך)
+  // 5. מוטציה ליצירת משתמש
   const createUserMutation = useMutation({
     mutationFn: usersApi.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] }); // מרענן את רשימת העובדים
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 
   return {
-    // נתונים
+    user: userQuery.data,
+
     users: usersQuery.data,
     fetchUsers: usersQuery.refetch,
     isLoadingUsers: usersQuery.isLoading,
 
-    // פעולות (Mutations)
     login: loginMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
     createNewUser: createUserMutation.mutateAsync,
 
-    // מצבי טעינה לפעולות (בשביל להראות "מתחבר..." בכפתור)
     isLoggingIn: loginMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
     isCreatingUser: createUserMutation.isPending,

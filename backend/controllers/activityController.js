@@ -65,7 +65,7 @@ export const costomersActivity = async (req, res) => {
 export const addcostomersActivity = async (req, res) => {
   try {
     const { customerId } = req.params;
-    const { statusAtTime, prices, notes } = req.body;
+    const { statusAtTime, notes } = req.body;
 
     if (!customerId || !statusAtTime) {
       return res.status(400).json({

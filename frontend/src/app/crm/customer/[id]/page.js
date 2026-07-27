@@ -111,7 +111,6 @@ export default function CustomerPage() {
         customerId: customer._id,
         activityData: {
           statusAtTime: activityForm.statusAtTime,
-          prices: Number(activityForm.prices) || 0,
           notes: activityForm.notes,
         },
       });
@@ -328,18 +327,6 @@ export default function CustomerPage() {
                   <option value="closed_won">Closed Won</option>
                   <option value="rejected">rejected</option>
                 </select>
-              </div>
-
-              <div className="form-group">
-                <label>Price:</label>
-                <input
-                  type="number"
-                  placeholder="Price / Amount"
-                  value={activityForm.prices}
-                  onChange={(e) =>
-                    setActivityForm({ ...activityForm, prices: e.target.value })
-                  }
-                />
               </div>
 
               <div className="form-group">

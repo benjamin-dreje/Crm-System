@@ -1,100 +1,80 @@
 "use client";
 import "./profile.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../hook/useAuth";
 
 export default function ProfilePage() {
-  // סטייט מקומי לעדכון פרטי הפרופיל בטופס
-  const [formData, setFormData] = useState({
-    fullName: "Benjamin System",
-    email: "benjamin@crm.com",
-    role: "Administrator",
-    phone: "+972 50-123-4567",
-    notifications: true,
-  });
+  const { user } = useAuth();
+ 
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  // אם עדיין לא עלינו בדפדפן
+  if (!user) {
+    return (
+      <div
+        className="profile-page"
+        style={{ padding: "2rem", textAlign: "center" }}
+      >
+        <h2>טוען...</h2>
+      </div>
+    );
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Profile updated successfully!");
-  };
+  // אם אין משתמש
+  if (!user) {
+    return (
+      <div
+        className="profile-page"
+        style={{ padding: "2rem", textAlign: "center" }}
+      >
+        <h2>אינך מחובר למערכת.</h2>
+      </div>
+    );
+  }
+
+  const fullName = user.fullName || user.name || "לא צוין";
+  const role = user.role || "User";
 
   return (
     <div className="profile-page">
-      {/* כותרת העמוד */}
       <div className="page-header">
         <h1>My Profile</h1>
 
         <div className="profile-header-info">
-          <span className="role-badge">{formData.role}</span>
+          <span className="role-badge">{role}</span>
           <span className="profile-avatar">👤</span>
         </div>
       </div>
 
       <div className="profile-grid">
-        {/* כרטיס פרופיל שמאלי/עליון */}
         <div className="profile-card summary-card">
-          <h2>{formData.fullName}</h2>
-          <p className="profile-email">{formData.email}</p>
+          <h2>{fullName}</h2>
+          <p className="profile-email">{user.email}</p>
         </div>
 
-        {/* טופס עריכת פרטים ימני */}
         <div className="profile-card form-card">
           <h3>Account Details</h3>
-          <form onSubmit={handleSubmit} className="profile-form">
-            <div className="form-group">
-              <label>Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-              />
+
+          <div className="profile-details">
+            <div className="detail-item">
+              <span className="detail-label">Full Name:</span>
+              <span className="detail-value">{fullName}</span>
             </div>
 
-            <div className="form-group">
-              <label>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
+            <div className="detail-item">
+              <span className="detail-label">Email Address:</span>
+              <span className="detail-value">{user.email || "לא צוין"}</span>
             </div>
 
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
+            <div className="detail-item">
+              <span className="detail-label">Phone Number:</span>
+              <span className="detail-value">{user.phone || "לא צוין"}</span>
             </div>
 
-            <div className="form-group checkbox-group">
-              <input
-                type="checkbox"
-                id="notifications"
-                name="notifications"
-                checked={formData.notifications}
-                onChange={handleChange}
-              />
-              <label htmlFor="notifications">Receive email notifications</label>
+            <div className="detail-item">
+              <span className="detail-label">Role:</span>
+              <span className="detail-value">{role}</span>
             </div>
-
-            <button type="submit" className="btn-save">
-              Save Changes
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

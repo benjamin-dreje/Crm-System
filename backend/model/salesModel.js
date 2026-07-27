@@ -4,7 +4,7 @@ const saleSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // או השם של מודל המשתמשים שלך
+      ref: "Users", // או השם של מודל המשתמשים שלך
       required: true,
     },
     customer: {
@@ -14,7 +14,7 @@ const saleSchema = new mongoose.Schema(
     },
     amount: {
       type: Number,
-      default: 0, 
+      default: 0,
     },
     saleDate: {
       type: Date,

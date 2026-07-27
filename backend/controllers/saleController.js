@@ -2,8 +2,7 @@ import { Sale } from "../model/salesModel.js";
 
 export async function getSales(req, res) {
   try {
-    const sales = await Sale.find();
-
+    const sales = await Sale.find().populate("user", "name email role");
     if (!sales || sales.length === 0) {
       return res.status(404).json({ message: "No sales found" });
     }
@@ -54,6 +53,40 @@ export async function getSales(req, res) {
         ((thisMonthSalesSum - lastMonthSalesSum) / lastMonthSalesSum) * 100;
     }
 
+    const employeesAnalytics = Object.values(
+      sales.reduce((acc, sale) => {
+        const userId = sale.user._id.toString();
+
+        if (!acc[userId]) {
+          acc[userId] = {
+            user: {
+              _id: sale.user._id,
+              name: sale.user.name,
+              email: sale.user.email,
+              role: sale.user.role,
+            },
+            salesCount: 0,
+            totalAmount: 0,
+            averageSale: 0,
+            lastSale: sale.saleDate,
+          };
+        }
+
+        acc[userId].salesCount++;
+        acc[userId].totalAmount += sale.amount || 0;
+
+        if (new Date(sale.saleDate) > new Date(acc[userId].lastSale)) {
+          acc[userId].lastSale = sale.saleDate;
+        }
+
+        acc[userId].averageSale = Math.round(
+          acc[userId].totalAmount / acc[userId].salesCount,
+        );
+
+        return acc;
+      }, {}),
+    );
+console.log("RETURNING EMPLOYEES:", employeesAnalytics);
     // החזרת התשובה עם כל הנתונים המבוקשים
     res.json({
       allSales: sales,
@@ -76,6 +109,7 @@ export async function getSales(req, res) {
           percentage: Number(differencePercentage.toFixed(2)), // עיגול ל-2 ספרות אחרי הנקודה
         },
       },
+      employeesAnalytics,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

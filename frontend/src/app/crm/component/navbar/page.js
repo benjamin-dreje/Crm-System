@@ -86,14 +86,14 @@ export default function Navbar() {
 
           <li>
             <Link
-              href="/crm/settings"
+              href="/crm/employees"
               onClick={() => setIsOpen(false)}
               className={`menu-link ${
                 pathname === "/crm/settings" ? "active" : ""
               }`}
             >
               <span className="link-icon">logo</span>
-              <span>Settings</span>
+              <span>employees</span>
             </Link>
           </li>
         </ul>
