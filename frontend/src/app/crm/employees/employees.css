@@ -38,6 +38,10 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   width: 100%;
+  padding: 10px;
+}
+.table-wrapper h3 {
+  padding: 10px;
 }
 
 .responsive-table {

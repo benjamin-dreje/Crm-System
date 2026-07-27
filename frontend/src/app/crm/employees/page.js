@@ -109,9 +109,7 @@ export default function EmployeesPage() {
       <div className="employees-header">
         <div className="title-e">
           <h1>Employees sales</h1>
-          <p className="track">
-            Manage your team performance and track employee sales activity.
-          </p>
+          <p className="track">Manage your team performance</p>
         </div>
         <div className="ep1">
           <span className="total-badge">
@@ -137,6 +135,7 @@ export default function EmployeesPage() {
         <div className="no-data">No employee data found</div>
       ) : (
         <div className="table-wrapper">
+          <h3> sales</h3>
           <table className="responsive-table">
             <thead>
               <tr>
@@ -186,7 +185,7 @@ export default function EmployeesPage() {
         {/* קוביה 1: ניהול עובדים */}
         <div className="manage-card">
           <h3>Employees Management</h3>
-          <p className="sub-title">Quick management of system users</p>
+          <p className="sub-title">Quick management of employees </p>
 
           <div className="mini-table-wrapper">
             <table className="mini-table">
@@ -236,7 +235,7 @@ export default function EmployeesPage() {
         {/* קוביה 2: הוספת עובד חדש */}
         <div className="add-card">
           <h3>Add New Employee</h3>
-          <p className="sub-title">Create credentials for a new team member</p>
+          <p className="sub-title">Create new employees </p>
 
           <form onSubmit={handleCreateUser} className="add-employee-form">
             {/* הודעת הצלחה/שגיאה מעוצבת בתוך הטאב */}
