@@ -3,7 +3,12 @@
   background: #f7f8fc;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+span.detail-label {
+  font-weight: 600;
+}
+span.detail-value {
+  color: #5f5f5f;
+}
 /* Header */
 
 .page-header {
