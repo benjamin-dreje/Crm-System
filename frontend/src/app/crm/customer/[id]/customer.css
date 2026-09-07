@@ -180,16 +180,122 @@
   color: #ef4444;
 }
 
+.status-badge {
+  appearance: base-select;
+  -webkit-appearance: base-select;
+  cursor: pointer;
+} /* ===================================================== SELECT ARROW ===================================================== */
+.status-badge::picker-icon {
+  color: currentColor;
+  transition: transform 0.2s ease;
+}
+.status-badge:open::picker-icon {
+  transform: rotate(180deg);
+} /* ===================================================== DROPDOWN / PICKER ===================================================== */
+.status-badge::picker(select) {
+  appearance: base-select;
+  margin-top: 6px;
+  padding: 6px;
+  min-width: 160px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+} /* ===================================================== OPTION ===================================================== */
+.status-badge option {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+} /* ===================================================== OPTION HOVER ===================================================== */
+.status-badge option:hover {
+  background: #f3f4f6;
+  color: #111827;
+} /* ===================================================== SELECTED OPTION ===================================================== */
+.status-badge option:checked {
+  background: #5f9ea0;
+  color: #ffffff;
+} /* ===================================================== FOCUS ===================================================== */
+.status-badge:focus-visible {
+  box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.25);
+} /* ===================================================== DISABLED ===================================================== */
+.status-badge:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+} /* ===================================================== STATUS - SELECT ===================================================== */
+
 /* עיצוב כפתור Cancel (אדום) */
 .add-activity-btn button.cancel-btn {
   background-color: #ef4444; /* צבע אדום נעים */
   color: #ffffff;
   border-color: #ef4444;
 }
+
 .modal-overlay {
-  background-color: cadetblue;
-  padding: 10px;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
   border-radius: 20px;
+  width: 400px;
+  max-width: 90%;
+  padding: 30px;
+  box-shadow: 0 10px 30px #00000040;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.modal-content input {
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #d1d5db;
+  padding: 10px;
+}
+
+.modal-content .modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-content .modal-actions .btn-confirm {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.modal-content .modal-actions .btn-cancel {
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
 }
 /* אפקט Hover כשהוא במצב Cancel */
 .add-activity-btn button.cancel-btn:hover {
