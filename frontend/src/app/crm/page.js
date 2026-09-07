@@ -58,13 +58,32 @@ export default function HomeCrm() {
   };
 
   // 1. Weekly Sales Chart Data
-  const weeklyData = salesAnalytics.weeklySales || [
-    salesAnalytics.thisMonth.totalAmount * 0.2,
-    salesAnalytics.thisMonth.totalAmount * 0.35,
-    salesAnalytics.thisMonth.totalAmount * 0.25,
-    salesAnalytics.thisMonth.totalAmount * 0.2,
-  ];
+  const weeklyData = [0, 0, 0, 0];
 
+  const allSales = sales?.allSales || [];
+
+  const now = new Date();
+
+  allSales.forEach((sale) => {
+    const saleDate = new Date(sale.saleDate || sale.createdAt);
+
+    if (
+      saleDate.getMonth() !== now.getMonth() ||
+      saleDate.getFullYear() !== now.getFullYear()
+    ) {
+      return;
+    }
+
+    const dayOfMonth = saleDate.getDate();
+
+    let weekIndex = Math.floor((dayOfMonth - 1) / 7);
+
+    if (weekIndex > 3) {
+      weekIndex = 3;
+    }
+
+    weeklyData[weekIndex] += sale.amount || 0;
+  });
   const weeklyChartData = {
     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
     datasets: [
