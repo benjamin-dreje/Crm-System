@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
-const BACKEND_URL = "https://crm-system-cxgw.onrender.com/api";
+// const BACKEND_URL = "https://crm-system-cxgw.onrender.com/api";
+const BACKEND_URL =
+  "https://crm-system-cxgw.onrender.com/api" || "http://localhost:5000/api";
 
 async function handler(request, { params }) {
   try {

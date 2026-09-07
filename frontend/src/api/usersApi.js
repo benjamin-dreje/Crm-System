@@ -12,6 +12,16 @@ export const usersApi = {
     return data;
   },
 
+  delete: async (userId) => {
+    const res = await fetch(`${BASE_URL}/users/${userId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to delete user");
+    return data;
+  },
+
   // POST /users/create - יצירת משתמש/עובד חדש (רק אדמין)
   create: async (userData) => {
     const res = await fetch(`${BASE_URL}/users/create`, {
