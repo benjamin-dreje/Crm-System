@@ -60,6 +60,28 @@ export default function CustomerPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
+    if(formData.firstName.trim() === "" || formData.lastName.trim() === "") {
+      setErrorMessage("First Name and Last Name are required.");
+      return;
+    }
+    if(formData.email.trim() === ""||!/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrorMessage("Email is required.");
+      return;
+    }
+    if(formData.phone.trim() === ""||formData.phone.trim().length < 10) {
+      setErrorMessage("Phone is required.");
+      return;
+    } 
+    if(formData.idNumber.trim() === ""||formData.idNumber.trim().length < 9) {
+      setErrorMessage("ID Number is required.");
+      return;
+    } 
+    // if(formData.address.city.trim() === "" || formData.address.street.trim() === "" || formData.address.houseNumber.trim() === "") {
+    //   setErrorMessage("City, Street and House Number are required.");
+    //   return;
+    // }
+    
+
     try {
       const response = await updateCustomer({
         id,
