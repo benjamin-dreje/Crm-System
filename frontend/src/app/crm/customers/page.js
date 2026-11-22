@@ -65,36 +65,70 @@ export default function CustomersPage() {
     return <Loading />;
   }
 
-  // הוספת לקוח
-  const handleCreateCustomer = async () => {
-    try {
-      await createCustomer(customer);
-      showSuccess("Customer created successfully!");
+ 
+// הוספת לקוח
+const handleCreateCustomer = async () => {
+  try {
+    setErrorMessage("");
 
-      // איפוס הטופס
-      setCustomer({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        idNumber: "",
-        address: {
-          city: "",
-          street: "",
-          houseNumber: "",
-          apartment: "",
-          entrance: "",
-        },
-      });
-
-      // סגירת טופס ההוספה לאחר שנייה וחצי
-      setTimeout(() => {
-        setButton(false);
-      }, 1500);
-    } catch (error) {
-      showError(error.message || "Failed to create customer");
+    if (
+      !formData.firstName?.trim() ||
+      !formData.lastName?.trim()
+    ) {
+      setErrorMessage("First Name and Last Name are required.");
+      return;
     }
-  };
+
+    if (
+      !formData.email?.trim() ||
+      !/^\S+@\S+\.\S+$/.test(formData.email.trim())
+    ) {
+      setErrorMessage(
+        "Invalid email address. Please enter a valid email (e.g. example@gmail.com)."
+      );
+      return;
+    }
+
+    if (!/^\d{9}$/.test(formData.idNumber?.trim() || "")) {
+      setErrorMessage("ID Number must contain exactly 9 digits.");
+      return;
+    }
+
+    if (!/^\d{10}$/.test(formData.phone?.trim() || "")) {
+      setErrorMessage("Phone must contain exactly 10 digits.");
+      return;
+    }
+
+    await createCustomer(customer);
+
+    showSuccess("Customer created successfully!");
+
+    // איפוס הטופס
+    setCustomer({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      idNumber: "",
+      address: {
+        city: "",
+        street: "",
+        houseNumber: "",
+        apartment: "",
+        entrance: "",
+      },
+    });
+
+    // סגירת הטופס לאחר שנייה וחצי
+    setTimeout(() => {
+      setButton(false);
+    }, 1500);
+
+  } catch (error) {
+    showError(error.message || "Failed to create customer");
+  }
+};
+
 
   // מחיקת לקוח
   const handleDeleteButton = async (id) => {

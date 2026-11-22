@@ -90,11 +90,17 @@ export default function CustomerPage() {
       return;
     }
     if (formData.email.trim() === "" || !/\S+@\S+\.\S+/.test(formData.email)) {
-      setErrorMessage("Email is required.");
+      setErrorMessage(
+       "Invalid email address. Please enter a valid email (e.g. example@gmail.com)."
+      );
       return;
     }
     if (!/^\d{9}$/.test(formData.idNumber.trim())) {
       setErrorMessage("ID Number must contain exactly 9 digits.");
+      return;
+    }
+    if (!/^\d{10}$/.test(formData.phone.trim())) {
+      setErrorMessage("Phone must contain exactly 10 digits.");
       return;
     }
     if (
