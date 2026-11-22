@@ -109,6 +109,10 @@
   color: #374151;
 }
 
+.customer-info-item span {
+  color: #5f6470;
+}
+
 .customer-info-item input {
   height: 45px;
 
