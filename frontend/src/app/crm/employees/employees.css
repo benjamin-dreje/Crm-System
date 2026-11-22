@@ -1,8 +1,3 @@
-.employees-container {
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
 .employees-header {
   display: flex;
   align-items: center;
@@ -11,7 +6,7 @@
 }
 
 .employees-header h1 {
-  font-size: 1.75rem;
+  font-size: 32px;
   font-weight: 700;
   color: #1e293b;
   margin: 0;
