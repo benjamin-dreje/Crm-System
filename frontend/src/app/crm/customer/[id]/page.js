@@ -56,31 +56,58 @@ export default function CustomerPage() {
     setErrorMessage("");
   };
 
+  const hasChanges = () => {
+    const originalData = {
+      firstName: customer.firstName || "",
+      lastName: customer.lastName || "",
+      email: customer.email || "",
+      phone: customer.phone || "",
+      idNumber: customer.idNumber || "",
+      address: {
+        city: customer.address?.city || "",
+        street: customer.address?.street || "",
+        houseNumber: customer.address?.houseNumber || "",
+        apartment: customer.address?.apartment || "",
+        entrance: customer.address?.entrance || "",
+      },
+    };
+
+    return JSON.stringify(formData) !== JSON.stringify(originalData);
+  };
+
   const handleSave = async () => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if(formData.firstName.trim() === "" || formData.lastName.trim() === "") {
+    // בדיקה האם בוצע שינוי
+    if (!hasChanges()) {
+      setErrorMessage("No changes were made.");
+      return;
+    }
+
+    if (formData.firstName.trim() === "" || formData.lastName.trim() === "") {
       setErrorMessage("First Name and Last Name are required.");
       return;
     }
-    if(formData.email.trim() === ""||!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (formData.email.trim() === "" || !/\S+@\S+\.\S+/.test(formData.email)) {
       setErrorMessage("Email is required.");
       return;
     }
-    if(formData.phone.trim() === ""||formData.phone.trim().length < 10) {
-      setErrorMessage("Phone is required.");
+    if (!/^\d{9}$/.test(formData.idNumber.trim())) {
+      setErrorMessage("ID Number must contain exactly 9 digits.");
       return;
-    } 
-    if(formData.idNumber.trim() === ""||formData.idNumber.trim().length < 9) {
+    }
+    if (
+      formData.idNumber.trim() === "" ||
+      formData.idNumber.trim().length < 9
+    ) {
       setErrorMessage("ID Number is required.");
       return;
-    } 
+    }
     // if(formData.address.city.trim() === "" || formData.address.street.trim() === "" || formData.address.houseNumber.trim() === "") {
     //   setErrorMessage("City, Street and House Number are required.");
     //   return;
     // }
-    
 
     try {
       const response = await updateCustomer({
@@ -138,7 +165,7 @@ export default function CustomerPage() {
 
       setSuccessMessage("Activity added successfully!");
       setShowAddActivity(false); // סגירת הטופס
-      setActivityForm({ statusAtTime: "in_progress",  notes: "" }); // איפוס הטופס
+      setActivityForm({ statusAtTime: "in_progress", notes: "" }); // איפוס הטופס
 
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
