@@ -381,7 +381,10 @@ table.activity-table th {
 }
 
 .notes-cell {
-  max-width: 300px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #475569;
 }
 
