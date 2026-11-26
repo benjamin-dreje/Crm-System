@@ -274,36 +274,12 @@ export default function CustomersPage() {
     <div className="customers-page">
       {/* הודעות הצלחה ושגיאה בראש העמוד */}
       {successMessage && (
-        <div
-          className="alert-message alert-success"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "12px 16px",
-            borderRadius: "8px",
-            backgroundColor: "#ecfdf5",
-            color: "#065f46",
-            border: "1px solid #a7f3d0",
-          }}
-        >
+        <div className="alert-message alert-success">
           <i className="fa-solid fa-circle-check"></i> {successMessage}
         </div>
       )}
       {errorMessage && (
-        <div
-          className="alert-message alert-error"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "12px 16px",
-            borderRadius: "8px",
-            backgroundColor: "#fef2f2",
-            color: "#991b1b",
-            border: "1px solid #fecaca",
-          }}
-        >
+        <div className="alert-message alert-error">
           <i className="fa-solid fa-triangle-exclamation"></i> {errorMessage}
         </div>
       )}
