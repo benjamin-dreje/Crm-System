@@ -13,7 +13,7 @@ import authAdmin from "../middleware/authAdmin.js"; // קובץ נפרד
 const router = express.Router();
 
 // GET /users/ - שליפת כל המשתמשים
-router.get("/", authMiddleware, getUsers);
+router.get("/", authMiddleware, authAdmin, getUsers);
 
 // POST /users/create - יצירת משתמש חדש
 router.post("/create", authMiddleware, authAdmin, createUser);
