@@ -65,70 +65,64 @@ export default function CustomersPage() {
     return <Loading />;
   }
 
- 
-// הוספת לקוח
-const handleCreateCustomer = async () => {
-  try {
-    setErrorMessage("");
+  // הוספת לקוח
+  const handleCreateCustomer = async () => {
+    try {
+      setErrorMessage("");
 
-    if (
-      !formData.firstName?.trim() ||
-      !formData.lastName?.trim()
-    ) {
-      setErrorMessage("First Name and Last Name are required.");
-      return;
+      if (!formData.firstName?.trim() || !formData.lastName?.trim()) {
+        setErrorMessage("First Name and Last Name are required.");
+        return;
+      }
+
+      if (
+        !formData.email?.trim() ||
+        !/^\S+@\S+\.\S+$/.test(formData.email.trim())
+      ) {
+        setErrorMessage(
+          "Invalid email address. Please enter a valid email (e.g. example@gmail.com).",
+        );
+        return;
+      }
+
+      if (!/^\d{9}$/.test(formData.idNumber?.trim() || "")) {
+        setErrorMessage("ID Number must contain exactly 9 digits.");
+        return;
+      }
+
+      if (!/^\d{10}$/.test(formData.phone?.trim() || "")) {
+        setErrorMessage("Phone must contain exactly 10 digits.");
+        return;
+      }
+
+      await createCustomer(customer);
+
+      showSuccess("Customer created successfully!");
+
+      // איפוס הטופס
+      setCustomer({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        idNumber: "",
+        address: {
+          city: "",
+          street: "",
+          houseNumber: "",
+          apartment: "",
+          entrance: "",
+        },
+      });
+
+      // סגירת הטופס לאחר שנייה וחצי
+      setTimeout(() => {
+        setButton(false);
+      }, 1500);
+    } catch (error) {
+      showError(error.message || "Failed to create customer");
     }
-
-    if (
-      !formData.email?.trim() ||
-      !/^\S+@\S+\.\S+$/.test(formData.email.trim())
-    ) {
-      setErrorMessage(
-        "Invalid email address. Please enter a valid email (e.g. example@gmail.com)."
-      );
-      return;
-    }
-
-    if (!/^\d{9}$/.test(formData.idNumber?.trim() || "")) {
-      setErrorMessage("ID Number must contain exactly 9 digits.");
-      return;
-    }
-
-    if (!/^\d{10}$/.test(formData.phone?.trim() || "")) {
-      setErrorMessage("Phone must contain exactly 10 digits.");
-      return;
-    }
-
-    await createCustomer(customer);
-
-    showSuccess("Customer created successfully!");
-
-    // איפוס הטופס
-    setCustomer({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      idNumber: "",
-      address: {
-        city: "",
-        street: "",
-        houseNumber: "",
-        apartment: "",
-        entrance: "",
-      },
-    });
-
-    // סגירת הטופס לאחר שנייה וחצי
-    setTimeout(() => {
-      setButton(false);
-    }, 1500);
-
-  } catch (error) {
-    showError(error.message || "Failed to create customer");
-  }
-};
-
+  };
 
   // מחיקת לקוח
   const handleDeleteButton = async (id) => {
@@ -280,12 +274,36 @@ const handleCreateCustomer = async () => {
     <div className="customers-page">
       {/* הודעות הצלחה ושגיאה בראש העמוד */}
       {successMessage && (
-        <div className="alert-message alert-success">
+        <div
+          className="alert-message alert-success"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            backgroundColor: "#ecfdf5",
+            color: "#065f46",
+            border: "1px solid #a7f3d0",
+          }}
+        >
           <i className="fa-solid fa-circle-check"></i> {successMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="alert-message alert-error">
+        <div
+          className="alert-message alert-error"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            backgroundColor: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+          }}
+        >
           <i className="fa-solid fa-triangle-exclamation"></i> {errorMessage}
         </div>
       )}
