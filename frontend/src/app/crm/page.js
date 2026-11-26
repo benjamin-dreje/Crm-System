@@ -36,10 +36,14 @@ export default function HomeCrm() {
     refetchGlobalStatus,
   } = useActivitiesAnalytics();
 
-  const { sales, isLoadingSales, isErrorSales } = useSales();
+  const {
+    sales,
+    isLoadingSales,
+    isErrorSales,
+    error: salesError,
+  } = useSales();
 
   const isLoading = isLoadingGlobalStatus || isLoadingSales;
-  const isError = isErrorGlobalStatus || isErrorSales;
 
   // Extract lead analytics
   const analytics = globalStatusData?.analytics || {
@@ -200,7 +204,7 @@ export default function HomeCrm() {
       )}
 
       {/* 2. Error State */}
-      {isError && (
+      {isErrorGlobalStatus && (
         <div className="analytics-status-box error">
           <div className="error-content">
             <svg
@@ -225,12 +229,23 @@ export default function HomeCrm() {
         </div>
       )}
 
-      {!isLoading && !isError && (
+      {!isLoading && !isErrorGlobalStatus && (
         <>
           {/* Key Metrics – Sales */}
           <section className="analytics-section">
             <h2 className="section-title">Sales view</h2>
-            <div className="analytics-grid">
+            {isErrorSales ? (
+              <div className="analytics-status-box error">
+                <div className="error-content">
+                  <span>
+                    {salesError?.message === "אין גישה"
+                      ? "אין גישה"
+                      : "כשל בשליפת הנתונים"}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="analytics-grid">
               <div className="analytics-card closed">
                 <div className="analytics-card-header">
                   <p className="analytics-title">Total Sales</p>
@@ -341,7 +356,8 @@ export default function HomeCrm() {
                   <span className="analytics-subtitle">vs. previous month</span>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
           </section>
 
           {/* Key Metrics – Leads */}
@@ -422,22 +438,24 @@ export default function HomeCrm() {
           </section>
 
           {/* Charts Section */}
-          <section className="charts-grid-wrapper">
-            <div className="chart-container-box">
-              <Bar
-                data={weeklyChartData}
-                options={createChartOptions(
-                  "Weekly Sales Breakdown (Current Month)",
-                )}
-              />
-            </div>
-            <div className="chart-container-box">
-              <Bar
-                data={monthlyChartData}
-                options={createChartOptions("Monthly Sales Comparison")}
-              />
-            </div>
-          </section>
+          {!isErrorSales && (
+            <section className="charts-grid-wrapper">
+              <div className="chart-container-box">
+                <Bar
+                  data={weeklyChartData}
+                  options={createChartOptions(
+                    "Weekly Sales Breakdown (Current Month)",
+                  )}
+                />
+              </div>
+              <div className="chart-container-box">
+                <Bar
+                  data={monthlyChartData}
+                  options={createChartOptions("Monthly Sales Comparison")}
+                />
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

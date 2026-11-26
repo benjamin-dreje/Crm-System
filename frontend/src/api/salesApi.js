@@ -6,7 +6,13 @@ export const salesApi = {
       credentials: "include",
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Failed to fetch sales data");
+    if (!res.ok) {
+      const message =
+        res.status === 401 || res.status === 403
+          ? "אין גישה"
+          : "כשל בשליפת הנתונים";
+      throw new Error(message);
+    }
     return data;
   },
 };

@@ -1,6 +1,8 @@
 import { Sale } from "../model/salesModel.js";
 
 export async function getSales(req, res) {
+ 
+
   try {
     const sales = await Sale.find().populate("user", "name email role");
     if (!sales || sales.length === 0) {
@@ -86,7 +88,7 @@ export async function getSales(req, res) {
         return acc;
       }, {}),
     );
-console.log("RETURNING EMPLOYEES:", employeesAnalytics);
+    console.log("RETURNING EMPLOYEES:", employeesAnalytics);
     // החזרת התשובה עם כל הנתונים המבוקשים
     res.json({
       allSales: sales,
