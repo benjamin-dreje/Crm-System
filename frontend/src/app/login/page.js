@@ -35,8 +35,8 @@ export default function Login() {
         <div className="login-demo-container">
           <div className="login-demo-user">
             <h3>user</h3>
-            <p>email: user@example.com</p>
-            <p>password: password</p>
+            <p>email: userSystem@gmail.com</p>
+            <p>password: userPassword</p>
           </div>
           <div className="login-demo-admin">
             <h3>admin</h3>
