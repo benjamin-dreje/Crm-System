@@ -12,7 +12,7 @@ export const salesApi = {
     }
 
     if (res.status === 401 || res.status === 403) {
-      throw new Error("Forbidden");
+      throw new Error("Forbidden to watch sales view");
     }
 
     if (!res.ok) {
