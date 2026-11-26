@@ -237,11 +237,7 @@ export default function HomeCrm() {
             {isErrorSales ? (
               <div className="analytics-status-box error">
                 <div className="error-content">
-                  <span>
-                    {salesError?.message === "אין גישה"
-                      ? "אין גישה"
-                      : "כשל בשליפת הנתונים"}
-                  </span>
+                  <span>{salesError.message}</span>
                 </div>
               </div>
             ) : (
