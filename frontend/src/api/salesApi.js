@@ -8,21 +8,21 @@ export const salesApi = {
         credentials: "include",
       });
     } catch {
-      throw new Error("כשל בשליפת הנתונים");
+      throw new Error("Failed to fetch data");
     }
 
     if (res.status === 401 || res.status === 403) {
-      throw new Error("אין גישה");
+      throw new Error("Forbidden");
     }
 
     if (!res.ok) {
-      throw new Error("כשל בשליפת הנתונים");
+      throw new Error("Failed to fetch data");
     }
 
     try {
       return await res.json();
     } catch {
-      throw new Error("כשל בשליפת הנתונים");
+      throw new Error("Failed to fetch data");
     }
   },
 };
