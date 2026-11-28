@@ -23,6 +23,75 @@ export const getCustomersByStatus = async (req, res) => {
       { updatedAt: -1 },
     );
 
+    const now = new Date();
+    const todayUtc = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+    );
+    const trendStart = new Date(
+      Date.UTC(todayUtc.getUTCFullYear(), todayUtc.getUTCMonth() - 11, 1),
+    );
+
+    const [salesByDate, leadsByDate] = await Promise.all([
+      Sale.aggregate([
+        { $match: { createdAt: { $gte: trendStart, $lte: now } } },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$createdAt",
+                timezone: "UTC",
+              },
+            },
+            amount: { $sum: "$amount" },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]),
+      Customer.aggregate([
+        { $match: { createdAt: { $gte: trendStart, $lte: now } } },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$createdAt",
+                timezone: "UTC",
+              },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]),
+    ]);
+
+    const trendsByDate = new Map();
+    const getTrendForDate = (date) => {
+      if (!trendsByDate.has(date)) {
+        trendsByDate.set(date, { date, sales: 0, leads: 0 });
+      }
+
+      return trendsByDate.get(date);
+    };
+
+    salesByDate.forEach(({ _id, amount }) => {
+      getTrendForDate(_id).sales = amount;
+    });
+    leadsByDate.forEach(({ _id, count }) => {
+      getTrendForDate(_id).leads = count;
+    });
+
+    const trends = [];
+    for (
+      let timestamp = trendStart.getTime();
+      timestamp <= todayUtc.getTime();
+      timestamp += 24 * 60 * 60 * 1000
+    ) {
+      const date = new Date(timestamp).toISOString().slice(0, 10);
+      trends.push(getTrendForDate(date));
+    }
+
     res.status(200).json({
       message: "Fetched leads successfully divided by status",
       analytics: {
@@ -32,6 +101,7 @@ export const getCustomersByStatus = async (req, res) => {
         totalLeads:
           closedLeads.length + inProgressLeads.length + newLeads.length,
       },
+      trends,
     });
   } catch (error) {
     res.status(500).json({
